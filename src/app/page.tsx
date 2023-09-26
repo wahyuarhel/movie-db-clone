@@ -1,45 +1,79 @@
 "use client"
 import CircularPercentage from '@/components/circularPercentage';
+import MovieCard from '@/components/movieCard';
+import { getPopularMovies } from '@/redux/action/movieAction';
 import { apiKey, imgUrl, movieUrl } from '@/redux/api/endpoint';
 import { setPopularMovies } from '@/redux/slice/movieSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook';
 import { PopularMovieResultType } from '@/types/popularMovieType';
 import axios from 'axios';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { HeaderHome } from './components';
+import { PopularMoviesResponseEnum } from './types';
 
 
 export default function Home() {
+
+  const dispatch = useAppDispatch()
+  const {
+    popularMovies,
+    loading,
+    popularMovieResponse
+  } = useAppSelector(state => state.movie)
+
+  console.log('popularMovies:', popularMovies)
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await dispatch(getPopularMovies())
+      return dispatch(setPopularMovies(response.payload));
+    }
+    fetchData()
+  }, [dispatch])
+
   return (
     <main>
       <div className='container m-auto'>
-        <HeaderHome />
+        {popularMovieResponse == PopularMoviesResponseEnum.success ?
+          <HeaderHome
+            backgroundImage={popularMovies.results[0]!.backdrop_path} />
+          :
+          <HeaderHome loading />
+        }
         <Section2 />
       </div>
     </main>
   )
 }
 
-function HeaderHome() {
-  const dispatch = useAppDispatch()
-  const { popularMovies } = useAppSelector(state => state.movie)
-  useEffect(() => {
-    dispatch(setPopularMovies(popularMovies))
-  }, [dispatch, popularMovies])
-  console.log('popular movies: ', popularMovies)
+// function HeaderHome() {
+//   const dispatch = useAppDispatch()
+//   const { popularMovies } = useAppSelector(state => state.movie)
 
-  return (
-    <section>
-      <div className={`px-[40px] py-[120px]`} >
-        <p className='text-5xl text-white font-semibold'>Welcome.</p>
-        <p className='text-3xl text-white pb-10'>Millions of movies, TV shows and people to discover. Explore now.
-        </p>
-        <SearchBar />
-      </div>
-    </section>
-  )
-}
+//   console.log('popularMovies:', popularMovies)
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       const response = await dispatch(getPopularMovies())
+//       return dispatch(setPopularMovies(response.payload));
+//     }
+//     fetchData()
+//   }, [dispatch])
+
+
+//   return (
+//     <section>
+//       <div className={`px-[40px] py-[120px]`}
+//         style={{ backgroundImage: `url(${imgUrl}${popularMovies.results[3].backdrop_path})` }}
+//       >
+//         <p className='text-5xl text-white font-semibold'>Welcome.</p>
+//         <p className='text-3xl text-white pb-10'>Millions of movies, TV shows and people to discover. Explore now.
+//         </p>
+//         <p></p>
+//         <SearchBar />
+//       </div>
+//     </section>
+//   )
+// }
 
 const trendingThisWeek = [
   { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
@@ -93,25 +127,17 @@ function Section2() {
       <div className='flex gap-5 px-10 py-10 overflow-x-scroll'>
         {isToday ?
           movies.map((movie: PopularMovieResultType) =>
-            <div key={movie.id}>
-              <div className='h-[230px] w-[150px]'>
-                <Image src={`${imgUrl}${movie.poster_path}`}
-                  alt={movie.title}
-                  width="100" height="100" loading='lazy'
-                  className='rounded-lg cursor-pointer'
-                  style={{ width: '100%', height: '100%' }}
-                />
-              </div>
-              <div className='relative pt-4'>
-                <div className='absolute z-1 top-[-20px] left-[10px] '>
-                  <CircularPercentage value={movie.vote_average} />
-                </div>
-                <p className='font-semibold pt-3'>{movie.title}</p>
-                <p className='text-gray-400'>{movie.release_date}</p>
-              </div>
-            </div>
+            <MovieCard
+              key={movie.id}
+              imgSrc={`${imgUrl}${movie.poster_path}`}
+              title={movie.title}
+              rate={movie.vote_average}
+              releaseDate={movie.release_date}
+              bgColor='transparent'
+              useShadow={false}
+              useBorder={false}
+            />
           )
-
           :
           trendingThisWeek.map((movie, i: number) =>
             <div key={i}>
@@ -136,12 +162,12 @@ function Section2() {
 
 
 
-function SearchBar() {
-  return (
-    <div className='flex relative'>
-      <input type="text" placeholder='Search for a movie, tv shows, person.....' className='flex-1 rounded-full px-5 py-3 outline-none ' />
-      <button className='bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-3 rounded-full absolute right-[-2px] z-1 text-white'>Search</button>
-    </div>
+// function SearchBar() {
+//   return (
+//     <div className='flex relative'>
+//       <input type="text" placeholder='Search for a movie, tv shows, person.....' className='flex-1 rounded-full px-5 py-3 outline-none ' />
+//       <button className='bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-3 rounded-full absolute right-[-2px] z-1 text-white'>Search</button>
+//     </div>
 
-  )
-}
+//   )
+// }

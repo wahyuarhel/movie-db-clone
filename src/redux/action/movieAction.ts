@@ -1,38 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { apiKey } from "../api/endpoint";
 import MovieEndpoint from "../api/movieApi";
-import { apiKey, movieUrl } from "../api/endpoint";
-import axios from "axios";
-import { setPopularMovies } from "../slice/movieSlice";
-
-// export const getPopularMovies = createAsyncThunk(
-//   'getPopularMovies',
-//   async (_, { rejectWithValue }) => {
-//     try {
-//       const response = await MovieEndpoint.get(`movie/popular?${apiKey}&language=en-US&page=${1}`);
-//       if (response.status === 200) {
-//         console.log('getPopularMovies response:', response.data)
-//         return response.data;
-//       }
-//       return response.data;
-//     } catch (err: any) {
-//       return rejectWithValue(err);
-//     }
-//   }
-// );
 
 
 
 export const getPopularMovies = createAsyncThunk(
   'getPopularMovies',
-  async () => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`movie/popular?${apiKey}&language=en-US&page=${1}`);
-      console.log('getPopularMovies response:', response)
-      console.log('getPopularMovies response:', response.data)
-      return response.data;
-
+      const response = await MovieEndpoint.get(`movie/popular?${apiKey}&language=en-US&page=${1}`);
+      if (response.status === 200) {
+        return response.data;
+      }
     } catch (err: any) {
-      console.log('error', err)
+      return rejectWithValue(`error catch getPopularMovies : ${err}`);
     }
   }
 );
