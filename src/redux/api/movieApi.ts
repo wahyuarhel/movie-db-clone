@@ -3,7 +3,7 @@ import { movieUrl } from "./endpoint";
 
 
 const MovieEndpoint = axios.create({
-  baseURL: movieUrl,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
 export default MovieEndpoint
