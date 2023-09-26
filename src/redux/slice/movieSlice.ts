@@ -1,19 +1,18 @@
+import { PopularMovieResponseType } from '@/types/popularMovieType';
 import { createSlice } from '@reduxjs/toolkit';
 import { getPopularMovies } from '../action/movieAction';
-import { PopularMovieResponseInitial, PopularMovieResponseType } from '@/types/popularMovieType';
-import { PopularMoviesResponseEnum } from '@/app/types';
 
 
 type MovieState = {
   loading: boolean
   popularMovies: PopularMovieResponseType,
-  popularMovieResponse: PopularMoviesResponseEnum
+  popularMovieResponse: string
 }
 
 const initialState: MovieState = {
   loading: false,
-  popularMovies: PopularMovieResponseInitial,
-  popularMovieResponse: PopularMoviesResponseEnum.pending
+  popularMovies: {} as PopularMovieResponseType,
+  popularMovieResponse: 'idle'
 }
 
 const MovieSlice = createSlice({
@@ -26,29 +25,25 @@ const MovieSlice = createSlice({
     },
   },
   extraReducers: builder => {
-    console.log('extraReducers')
     builder.addCase(getPopularMovies.pending, (state, action) => {
-      console.log('getPopularMovies.pending')
       return {
         ...state,
-        popularMovieResponse: PopularMoviesResponseEnum.pending,
+        popularMovieResponse: action.type,
         loading: true,
       };
     });
     builder.addCase(getPopularMovies.fulfilled, (state, action) => {
-      console.log('getPopularMovies.fulfilled')
       return {
         ...state,
         loading: false,
-        popularMovieResponse: PopularMoviesResponseEnum.success,
+        popularMovieResponse: action.type,
         popularMovies: action.payload,
       };
     });
     builder.addCase(getPopularMovies.rejected, (state, action) => {
-      console.log('getPopularMovies.rejected:', action.payload)
       return {
         ...state,
-        popularMovieResponse: PopularMoviesResponseEnum.failed,
+        popularMovieResponse: action.type,
         loading: false,
       };
     });
