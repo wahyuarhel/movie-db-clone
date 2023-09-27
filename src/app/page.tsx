@@ -1,13 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
-import CircularPercentage from '@/components/circularPercentage';
 import MovieCard, { MovieCardPlaceholder } from '@/components/movieCard';
-import { getPopularMovies } from '@/redux/action/movieAction';
+import { MediaTypeEnum, PopularMoviesResponseEnum } from '@/enums/enums';
+import { getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday } from '@/redux/action/movieAction';
 import { imgUrl } from '@/redux/api/endpoint';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook';
-import { PopularMovieResultType } from '@/types/popularMovieType';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { PopularMoviesResponseEnum } from '@/enums/enums';
+import React, { useEffect, useRef, useState } from 'react';
 import { HeaderHome } from './components/headerHome';
 
 
@@ -15,13 +14,12 @@ export default function Home() {
   const dispatch = useAppDispatch()
   const {
     popularMovies,
-    loading,
-    popularMovieResponse
+    popularMovieResponse,
   } = useAppSelector(state => state.movie)
 
   useEffect(() => {
     dispatch(getPopularMovies())
-  }, [dispatch])
+  }, [])
   const randomIndex = Math.floor(Math.random() * 10)
 
   return (
@@ -33,45 +31,33 @@ export default function Home() {
           :
           <HeaderHome loading />
         }
-        <TrendingMovie trendingToday={popularMovies.results} trendingWeek={trendingThisWeek} />
+        <TrendingMovie />
       </div>
     </main>
   )
 }
 
-const trendingThisWeek = [
-  { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
-  { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
-  { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
-  { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
-  { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
-  { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
-  { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
-  { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
-  { title: 'movie title', date: 'movie date', img: 'movie cover img', rate: Math.floor(Math.random() * 10) },
-]
-
-interface TrendingMovieProps {
-  trendingToday: PopularMovieResultType[],
-  trendingWeek: { title: string; date: string; img: string; rate: number; }[],
-}
-/**
-```
-interface TrendingMovieProps {
-  trendingToday: PopularMovieResultType[],
-  trendingWeek: { title: string; date: string; img: string; rate: number; }[],
-}
-```
- */
-function TrendingMovie(props: TrendingMovieProps) {
-  const {
-    trendingToday,
-    trendingWeek
-  } = props
+function TrendingMovie() {
+  const dispatch = useAppDispatch()
+  const ref = useRef<HTMLDivElement>(null)
   const [isToday, setIsToday] = useState(true)
+  const {
+    trendingAllThisToday,
+    trendingAllThisWeek,
+  } = useAppSelector(state => state.movie)
+
   function onClickSwitch() {
     setIsToday(!isToday);
+    if (ref.current !== null) {
+      console.log('ref.current:', ref)
+      ref.current.scroll({ left: 0, behavior: 'smooth' })
+    }
   }
+
+  useEffect(() => {
+    dispatch(getTrendingAllToday())
+    dispatch(getTrendingAllThisWeek())
+  }, [])
 
   return (
     <section className='py-5 bg-no-repeat bg-[center_bottom_3rem]'
@@ -87,43 +73,44 @@ function TrendingMovie(props: TrendingMovieProps) {
           </Link>
         </div>
       </div>
-      <div className='flex gap-5 px-10 py-10 overflow-x-scroll'>
+      <div ref={ref} className='flex gap-5 px-10 py-10 overflow-x-scroll'>
         {isToday ?
-          trendingToday == undefined ?
-            Array.from(Array(10), (_, i) =>
-              <React.Fragment key={i}>
-                <MovieCardPlaceholder />
-              </React.Fragment>
-            )
-            :
-            trendingToday?.map((movie: PopularMovieResultType) =>
+          trendingAllThisToday.results !== undefined ?
+            trendingAllThisToday.results.map((movie) =>
               <MovieCard
                 key={movie.id}
                 imgSrc={`${imgUrl}${movie.poster_path}`}
-                title={movie.title}
+                title={movie.media_type == MediaTypeEnum.movie ? movie.title : movie.name}
                 rate={movie.vote_average}
-                releaseDate={movie.release_date}
+                releaseDate={movie.media_type == MediaTypeEnum.movie ? movie.release_date : movie.first_air_date}
                 cardStyle='border-none'
                 useShadow={false}
                 useBorder={false}
               />
             )
-          :
-          trendingWeek.map((movie, i: number) =>
-            <div key={i}>
-              <div className='h-[230px] w-[150px] border rounded-lg'>
-                {movie?.img}
-              </div>
-              <div className='relative pt-4'>
-                <div className='absolute z-1 top-[-20px] left-[10px] '>
-                  <CircularPercentage value={movie?.rate} />
-                </div>
-                <p className='font-semibold pt-3'>{movie?.title}</p>
-                <p className='text-gray-400'>{movie?.date}</p>
-              </div>
-            </div>
-          )
-
+            : Array.from(Array(10), (_, i) =>
+              <React.Fragment key={i}>
+                <MovieCardPlaceholder />
+              </React.Fragment>
+            )
+          : trendingAllThisWeek.results !== undefined ?
+            trendingAllThisWeek.results.map((movie) =>
+              <MovieCard
+                key={movie.id}
+                imgSrc={`${imgUrl}${movie.poster_path}`}
+                title={movie.media_type == MediaTypeEnum.movie ? movie.title : movie.name}
+                rate={movie.vote_average}
+                releaseDate={movie.media_type == MediaTypeEnum.movie ? movie.release_date : movie.first_air_date}
+                cardStyle='border-none'
+                useShadow={false}
+                useBorder={false}
+              />
+            )
+            : Array.from(Array(10), (_, i) =>
+              <React.Fragment key={i}>
+                <MovieCardPlaceholder />
+              </React.Fragment>
+            )
         }
       </div >
     </section >

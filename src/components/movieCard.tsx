@@ -1,8 +1,8 @@
 "use client"
-import React from 'react'
-import CircularPercentage from './circularPercentage'
 import Image from 'next/image'
+import { BsImage } from 'react-icons/bs'
 import { PiDotsThreeCircleFill } from 'react-icons/pi'
+import CircularPercentage from './circularPercentage'
 
 
 interface IMovieCard {
@@ -56,13 +56,13 @@ function MovieCard(
   return (
     <div className={`${useShadow ? 'shadow-lg' : ''} rounded-lg ${bgColor}`}>
       <div className={`h-[${imgHeight}] w-[${imgWidth}] relative`}>
-        <div className='absolute z-1 top-2 right-2 text-white opacity-50 hover:text-[rgb(1,180,228)] hover:opacity-100 cursor-pointer'>
+        <div className='absolute z-10 top-2 right-2 text-white opacity-50 hover:text-[rgb(1,180,228)] hover:opacity-100 cursor-pointer'>
           <PiDotsThreeCircleFill size={25} />
         </div>
         <Image
           src={imgSrc}
           alt={title}
-          className={`cursor-pointer ${imgStyle}`}
+          className={`cursor-pointer ${imgStyle} z-0`}
           sizes='150'
           fill
         />
@@ -82,7 +82,8 @@ function MovieCard(
 export function MovieCardPlaceholder() {
   return (
     <div>
-      <div className={`h-[230px] w-[150px] bg-gray-200 rounded-lg`}>
+      <div className={`h-[230px] w-[150px] bg-gray-200 rounded-lg flex items-center justify-center`}>
+        <BsImage size={50} fill='grey' />
       </div>
       <div className=' h-[100px] w-[150px] relative pt-4 px-3'>
         <div className='absolute z-1 top-[-20px] left-[10px] '>

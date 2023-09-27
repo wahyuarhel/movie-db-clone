@@ -4,7 +4,6 @@ import 'react-circular-progressbar/dist/styles.css';
 
 
 interface ICircularPercentage {
-  /** test */
   value: number
   strokeWidth?: number
   baseColor?: string
@@ -15,6 +14,20 @@ interface ICircularPercentage {
   textSize?: string | number,
   textColor?: string
 }
+
+/**
+interface ICircularPercentage {
+  value: number
+  strokeWidth?: number
+  baseColor?: string
+  valueColor?: string
+  size?: number | string
+  bgColor?: string
+  useBackGround?: boolean,
+  textSize?: string | number,
+  textColor?: string
+}
+ */
 function CircularPercentage(props: ICircularPercentage) {
   const {
     value = 0,
@@ -27,12 +40,12 @@ function CircularPercentage(props: ICircularPercentage) {
     bgColor = '#081C22'
   } = props
 
-  const percentage = value * 10
+  const percentage = parseFloat(value.toFixed(1)) * 10
   function indicatorColor() {
     switch (true) {
       case percentage <= 40:
         return 'red'
-      case percentage <= 70:
+      case percentage < 70:
         return 'yellow'
       default:
         return valueColor

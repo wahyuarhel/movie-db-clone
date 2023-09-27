@@ -1,3 +1,5 @@
+
+
 export interface PopularMovieResponseType {
   page: number,
   results: PopularMovieResultType[],
