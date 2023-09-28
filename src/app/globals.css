@@ -9,6 +9,7 @@ body {
   margin: auto;
   box-sizing: border-box;
   padding: 0;
+  background-color: rgb(3, 37, 65);
 }
 p {
   font-family: 'Source Sans 3', sans-serif;

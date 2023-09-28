@@ -6,7 +6,7 @@ import { getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday } from '@
 import { imgUrl } from '@/redux/api/endpoint';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook';
 import Link from 'next/link';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { HeaderHome } from './components/headerHome';
 
 
@@ -32,9 +32,10 @@ export default function Home() {
           <HeaderHome loading />
         }
         <TrendingMovie />
+
       </div>
     </main>
-  )
+  );
 }
 
 function TrendingMovie() {
@@ -116,3 +117,48 @@ function TrendingMovie() {
     </section >
   )
 }
+interface LatestTrailerContentProps {
+
+}
+function LatestTrailerContent(props: LatestTrailerContentProps) {
+  return (
+    <div className='pt-5 bg-darkBlue bg-blend-screen'>
+      <div className='flex items-center gap-5 pb-5 px-10'>
+        <p className='text-2xl font-semibold text-white'>Latest Trailers</p>
+        <ChoiceButtons label={buttonFill} />
+      </div>
+      <div>
+      </div>
+    </div>
+  )
+}
+
+
+interface ChoiceButtonsPropsType {
+  label: string[],
+}
+function ChoiceButtons(props: ChoiceButtonsPropsType): JSX.Element {
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
+  function onClicked(idx: number) {
+    setSelectedIndex(idx)
+  }
+  function bgColorSelected(i: number) {
+    if (selectedIndex === i) return 'bg-gradient-to-r from-lighterGreen to-lightGreen rounded-full'
+    else return ''
+  }
+  function textColor(i: number): string { return selectedIndex === i ? 'text-darkBlue' : 'text-white' }
+  return (
+    <div className='inline-flex border border-lightGreen rounded-full'>
+      {props.label.map((e, i) =>
+        <div key={i}
+          className={`px-5 py-1 ${bgColorSelected(i)}`}>
+          <p className={`cursor-pointer ${textColor(i)} relative  z-10`}
+            onClick={() => onClicked(i)}
+          >{e}</p>
+        </div>
+      )}
+    </div >
+  )
+}
+
+const buttonFill: string[] = ['Popular', 'Streaming', 'On Tv', 'For Rent', 'In Theaters',]

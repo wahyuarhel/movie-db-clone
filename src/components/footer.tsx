@@ -5,7 +5,7 @@ export default function Footer() {
     <div className='bg-[#03243F] pt-10 pb-24'>
       <div className='container m-auto flex justify-center'>
         <div className='flex flex-row gap-10'>
-          <div className='mr-5'>Logo</div>
+          <div className='mr-5 text-white'>Logo</div>
           {footerContent.map((e, i) =>
             <div key={i}>
               <p className='text-white text-xl font-bold'>{e.title.toLocaleUpperCase()}</p>
