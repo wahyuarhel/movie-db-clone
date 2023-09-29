@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { BsImage } from 'react-icons/bs'
 import { PiDotsThreeCircleFill } from 'react-icons/pi'
 import CircularPercentage from './circularPercentage'
+import Link from 'next/link'
 
 
 interface IMovieCard {
@@ -17,6 +18,7 @@ interface IMovieCard {
   useBorder?: boolean
   imgStyle?: string
   cardStyle?: string
+  href?: string
 }
 
 /**
@@ -37,9 +39,7 @@ interface IMovieCard {
 ```
 `
 */
-function MovieCard(
-  props
-    : IMovieCard) {
+function MovieCard(props: IMovieCard) {
 
   const {
     bgColor,
@@ -52,6 +52,7 @@ function MovieCard(
     useShadow = true,
     imgStyle = 'rounded-lg',
     cardStyle = 'border rounded-lg',
+    href = '#'
   } = props
   return (
     <div className={`${useShadow ? 'shadow-lg' : ''} rounded-lg ${bgColor}`}>
@@ -59,19 +60,25 @@ function MovieCard(
         <div className='absolute z-10 top-2 right-2 text-white opacity-50 hover:text-[rgb(1,180,228)] hover:opacity-100 cursor-pointer'>
           <PiDotsThreeCircleFill size={25} />
         </div>
-        <Image
-          src={imgSrc}
-          alt={title}
-          className={`cursor-pointer ${imgStyle} z-0`}
-          sizes='150'
-          fill
-        />
+        <Link href={href} >
+          <div className='w-[150px] h-[225px] relative'>
+            <Image
+              src={imgSrc}
+              alt={title}
+              className={`cursor-pointer ${imgStyle}`}
+              sizes="320"
+              fill
+            />
+          </div>
+        </Link>
       </div>
       <div className={`min-h-[130px] relative pt-4 px-3 ${cardStyle}`}>
         <div className='absolute z-1 top-[-20px] left-[10px] '>
           <CircularPercentage value={rate} />
         </div>
-        <p className='font-semibold pt-3'>{title}</p>
+        <Link href={href} >
+          <p className='font-semibold pt-3 hover:text-lightBlue'>{title}</p>
+        </Link>
         <p className='text-gray-400'>{releaseDate}</p>
       </div>
     </div>
@@ -82,7 +89,7 @@ function MovieCard(
 export function MovieCardPlaceholder() {
   return (
     <div>
-      <div className={`h-[230px] w-[150px] bg-gray-200 rounded-lg flex items-center justify-center`}>
+      <div className={`h-[225px] w-[150px] bg-gray-200 rounded-lg flex items-center justify-center`}>
         <BsImage size={50} fill='grey' />
       </div>
       <div className=' h-[100px] w-[150px] relative pt-4 px-3'>

@@ -1,10 +1,13 @@
+import { MovieDetailsResponseStatusType, TvDetailsResponseStatusType } from '@/enums/enums';
+import { MovieDetailsResponseType } from '@/types/movieDetailsType';
 import { PopularMovieResponseType } from '@/types/popularMovieType';
-import { createSlice } from '@reduxjs/toolkit';
-import { getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday, getTrendingMovieThisWeek, getTrendingMovieToday } from '../action/movieAction';
 import { TrendingResponseType } from '@/types/trendingType';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { getMovieDetails, getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday, getTrendingMovieThisWeek, getTrendingMovieToday } from '../action/movieAction';
+import { getTvDetails } from '../action/tvAction';
 
 
-type MovieState = {
+export type MovieState = {
   loading: boolean
   popularMovies: PopularMovieResponseType
   popularMovieResponse: string
@@ -16,6 +19,10 @@ type MovieState = {
   trendingAllThisTodayResponse: string
   trendingAllThisWeek: TrendingResponseType
   trendingAllThisWeekResponse: string
+  movieDetails: MovieDetailsResponseType,
+  movieDetailsResponse: string,
+  tvDetails: object,
+  tvDetailsResponse: string,
 }
 
 const initialState: MovieState = {
@@ -30,6 +37,10 @@ const initialState: MovieState = {
   trendingAllThisTodayResponse: '',
   trendingAllThisWeek: {} as TrendingResponseType,
   trendingAllThisWeekResponse: '',
+  movieDetails: {} as MovieDetailsResponseType,
+  movieDetailsResponse: MovieDetailsResponseStatusType.pending,
+  tvDetails: {} as object,
+  tvDetailsResponse: TvDetailsResponseStatusType.pending
 }
 
 const MovieSlice = createSlice({
@@ -52,6 +63,13 @@ const MovieSlice = createSlice({
     setTrendingAllThisWeek: (state, action) => {
       state.trendingAllThisWeek = action.payload
     },
+    setMovieDetails: (state, action: PayloadAction<MovieDetailsResponseType>) => {
+      state.movieDetails = action.payload
+      state.movieDetails.release_date = action.payload.release_date.slice(0, 4)
+    },
+    setTvDetails: (state, action) => {
+      state.tvDetails = action.payload
+    }
   },
   extraReducers: builder => {
     builder.addCase(getPopularMovies.pending, (state, action) => {
@@ -162,6 +180,50 @@ const MovieSlice = createSlice({
       return {
         ...state,
         trendingAllThisWeekResponse: action.type,
+        loading: false,
+      };
+    });
+    builder.addCase(getMovieDetails.pending, (state, action) => {
+      return {
+        ...state,
+        movieDetailsResponse: action.type,
+        loading: true,
+      };
+    });
+    builder.addCase(getMovieDetails.fulfilled, (state, action) => {
+      return {
+        ...state,
+        movieDetailsResponse: action.type,
+        loading: false,
+        movieDetails: action.payload,
+      };
+    });
+    builder.addCase(getMovieDetails.rejected, (state, action) => {
+      return {
+        ...state,
+        movieDetailsResponse: action.type,
+        loading: false,
+      };
+    });
+    builder.addCase(getTvDetails.pending, (state, action) => {
+      return {
+        ...state,
+        tvDetailsResponse: action.type,
+        loading: true,
+      };
+    });
+    builder.addCase(getTvDetails.fulfilled, (state, action) => {
+      return {
+        ...state,
+        tvDetailsResponse: action.type,
+        loading: false,
+        tvDetails: action.payload,
+      };
+    });
+    builder.addCase(getTvDetails.rejected, (state, action) => {
+      return {
+        ...state,
+        tvDetailsResponse: action.type,
         loading: false,
       };
     });

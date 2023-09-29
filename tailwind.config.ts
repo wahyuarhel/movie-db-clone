@@ -1,7 +1,8 @@
 import type { Config } from 'tailwindcss'
-
+import { nextui } from '@nextui-org/theme'
 const config: Config = {
   content: [
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -35,17 +36,9 @@ const config: Config = {
         'accountYellow': 'rgb(210,144,1)',
         'accountRed': 'rgb(212,2,66)',
       },
-      keyframes: {
-        extended: {
-          '0%': { transform: 'scaleX(0.4)' },
-          '100%': { transform: 'scaleX(1)' },
-        }
-      },
-      animation: {
-        extended: 'extended 0.4s ease-in-out '
-      }
     },
   },
-  plugins: [],
+  // darkMode: "class",
+  plugins: [nextui()],
 }
 export default config

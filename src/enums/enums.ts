@@ -20,3 +20,15 @@ export enum MediaTypeEnum {
   movie = 'movie',
   person = "person"
 }
+
+export enum MovieDetailsResponseStatusType {
+  pending = 'getMovieDetails/pending',
+  fulfilled = 'getMovieDetails/fulfilled',
+  rejected = 'getMovieDetails/rejected'
+}
+
+export enum TvDetailsResponseStatusType {
+  pending = 'getTvDetails/pending',
+  fulfilled = 'getTvDetails/fulfilled',
+  rejected = 'getTvDetails/rejected'
+}

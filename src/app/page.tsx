@@ -3,10 +3,10 @@
 import MovieCard, { MovieCardPlaceholder } from '@/components/movieCard';
 import { MediaTypeEnum, PopularMoviesResponseEnum } from '@/enums/enums';
 import { getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday } from '@/redux/action/movieAction';
-import { imgUrl } from '@/redux/api/endpoint';
+import { posterUrlSizeW342 } from '@/redux/api/endpoint';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook';
 import Link from 'next/link';
-import React, { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { HeaderHome } from './components/headerHome';
 
 
@@ -32,7 +32,6 @@ export default function Home() {
           <HeaderHome loading />
         }
         <TrendingMovie />
-
       </div>
     </main>
   );
@@ -61,7 +60,7 @@ function TrendingMovie() {
   }, [])
 
   return (
-    <section className='py-5 bg-no-repeat bg-[center_bottom_3rem]'
+    <section className='pt-5 bg-no-repeat bg-[center_bottom_3rem]'
       style={{ backgroundImage: "url('https://www.themoviedb.org/assets/2/v4/misc/trending-bg-39afc2a5f77e31d469b25c187814c0a2efef225494c038098d62317d923f8415.svg')" }}>
       <div className='px-10 flex gap-5 items-center'>
         <p className='text-2xl font-semibold'>Trending</p>
@@ -80,10 +79,11 @@ function TrendingMovie() {
             trendingAllThisToday.results.map((movie) =>
               <MovieCard
                 key={movie.id}
-                imgSrc={`${imgUrl}${movie.poster_path}`}
-                title={movie.media_type == MediaTypeEnum.movie ? movie.title : movie.name}
+                href={movie.media_type == MediaTypeEnum.movie ? `/movie/${movie.id}` : `/tv/${movie.id}`}
+                imgSrc={`${posterUrlSizeW342}${movie.poster_path}`}
+                title={movie.media_type === MediaTypeEnum.movie ? movie.title : movie.name}
                 rate={movie.vote_average}
-                releaseDate={movie.media_type == MediaTypeEnum.movie ? movie.release_date : movie.first_air_date}
+                releaseDate={movie.media_type === MediaTypeEnum.movie ? movie.release_date : movie.first_air_date}
                 cardStyle='border-none'
                 useShadow={false}
                 useBorder={false}
@@ -98,7 +98,7 @@ function TrendingMovie() {
             trendingAllThisWeek.results.map((movie) =>
               <MovieCard
                 key={movie.id}
-                imgSrc={`${imgUrl}${movie.poster_path}`}
+                imgSrc={`${posterUrlSizeW342}${movie.poster_path}`}
                 title={movie.media_type == MediaTypeEnum.movie ? movie.title : movie.name}
                 rate={movie.vote_average}
                 releaseDate={movie.media_type == MediaTypeEnum.movie ? movie.release_date : movie.first_air_date}
