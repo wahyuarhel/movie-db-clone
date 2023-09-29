@@ -1,21 +1,21 @@
-export enum PopularMoviesResponseEnum {
+export enum PopularMoviesResponseType {
   pending = 'getPopularMovies/pending',
   fulfilled = 'getPopularMovies/fulfilled',
   rejected = 'getPopularMovies/rejected'
 }
 
-export enum TrendingMovieTodayResponseEnum {
+export enum TrendingMovieTodayResponseType {
   pending = 'getTrendingMovieToday/pending',
   fulfilled = 'getTrendingMovieToday/fulfilled',
   rejected = 'getTrendingMovieToday/rejected'
 }
-export enum TrendingMovieWeekResponseEnum {
+export enum TrendingMovieWeekResponseType {
   pending = 'getTrendingMovieWeek/pending',
   fulfilled = 'getTrendingMovieWeek/fulfilled',
   rejected = 'getTrendingMovieWeek/rejected'
 }
 
-export enum MediaTypeEnum {
+export enum MediaType {
   tv = 'tv',
   movie = 'movie',
   person = "person"

@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 import MovieCard, { MovieCardPlaceholder } from '@/components/movieCard';
-import { MediaTypeEnum, PopularMoviesResponseEnum } from '@/enums/enums';
 import { getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday } from '@/redux/action/movieAction';
 import { posterUrlSizeW342 } from '@/redux/api/endpoint';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { HeaderHome } from './components/headerHome';
+import { MediaType, PopularMoviesResponseType } from '@/enums/enums';
 
 
 export default function Home() {
@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <main>
       <div className='container m-auto'>
-        {popularMovieResponse == PopularMoviesResponseEnum.fulfilled ?
+        {popularMovieResponse == PopularMoviesResponseType.fulfilled ?
           <HeaderHome
             backgroundImage={popularMovies.results[randomIndex].backdrop_path} />
           :
@@ -79,11 +79,11 @@ function TrendingMovie() {
             trendingAllThisToday.results.map((movie) =>
               <MovieCard
                 key={movie.id}
-                href={movie.media_type == MediaTypeEnum.movie ? `/movie/${movie.id}` : `/tv/${movie.id}`}
+                href={movie.media_type == MediaType.movie ? `/movie/${movie.id}` : `/tv/${movie.id}`}
                 imgSrc={`${posterUrlSizeW342}${movie.poster_path}`}
-                title={movie.media_type === MediaTypeEnum.movie ? movie.title : movie.name}
+                title={movie.media_type === MediaType.movie ? movie.title : movie.name}
                 rate={movie.vote_average}
-                releaseDate={movie.media_type === MediaTypeEnum.movie ? movie.release_date : movie.first_air_date}
+                releaseDate={movie.media_type === MediaType.movie ? movie.release_date : movie.first_air_date}
                 cardStyle='border-none'
                 useShadow={false}
                 useBorder={false}
@@ -99,9 +99,9 @@ function TrendingMovie() {
               <MovieCard
                 key={movie.id}
                 imgSrc={`${posterUrlSizeW342}${movie.poster_path}`}
-                title={movie.media_type == MediaTypeEnum.movie ? movie.title : movie.name}
+                title={movie.media_type == MediaType.movie ? movie.title : movie.name}
                 rate={movie.vote_average}
-                releaseDate={movie.media_type == MediaTypeEnum.movie ? movie.release_date : movie.first_air_date}
+                releaseDate={movie.media_type == MediaType.movie ? movie.release_date : movie.first_air_date}
                 cardStyle='border-none'
                 useShadow={false}
                 useBorder={false}

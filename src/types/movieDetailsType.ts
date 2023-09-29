@@ -1,4 +1,4 @@
-export interface MovieDetailsResponseType {
+export interface IMovieDetailsResponse {
   adult: boolean
   backdrop_path: string
   belongs_to_collection: string

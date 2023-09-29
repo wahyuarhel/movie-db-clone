@@ -1,25 +1,25 @@
 import { MovieDetailsResponseStatusType, TvDetailsResponseStatusType } from '@/enums/enums';
-import { MovieDetailsResponseType } from '@/types/movieDetailsType';
-import { PopularMovieResponseType } from '@/types/popularMovieType';
-import { TrendingResponseType } from '@/types/trendingType';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { getMovieDetails, getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday, getTrendingMovieThisWeek, getTrendingMovieToday } from '../action/movieAction';
 import { getTvDetails } from '../action/tvAction';
+import { IMovieDetailsResponse } from '@/types/movieDetailsType';
+import { IPopularMovieResponse } from '@/types/popularMovieType';
+import { ITrendingResponse } from '@/types/trendingType';
 
 
 export type MovieState = {
   loading: boolean
-  popularMovies: PopularMovieResponseType
+  popularMovies: IPopularMovieResponse
   popularMovieResponse: string
-  trendingMovieToday: TrendingResponseType
+  trendingMovieToday: ITrendingResponse
   trendingMovieTodayResponse: string
-  trendingMovieThisWeek: TrendingResponseType
+  trendingMovieThisWeek: ITrendingResponse
   trendingMovieThisWeekResponse: string
-  trendingAllThisToday: TrendingResponseType
+  trendingAllThisToday: ITrendingResponse
   trendingAllThisTodayResponse: string
-  trendingAllThisWeek: TrendingResponseType
+  trendingAllThisWeek: ITrendingResponse
   trendingAllThisWeekResponse: string
-  movieDetails: MovieDetailsResponseType,
+  movieDetails: IMovieDetailsResponse,
   movieDetailsResponse: string,
   tvDetails: object,
   tvDetailsResponse: string,
@@ -27,17 +27,17 @@ export type MovieState = {
 
 const initialState: MovieState = {
   loading: false,
-  popularMovies: {} as PopularMovieResponseType,
+  popularMovies: {} as IPopularMovieResponse,
   popularMovieResponse: '',
-  trendingMovieToday: {} as TrendingResponseType,
+  trendingMovieToday: {} as ITrendingResponse,
   trendingMovieTodayResponse: '',
-  trendingMovieThisWeek: {} as TrendingResponseType,
+  trendingMovieThisWeek: {} as ITrendingResponse,
   trendingMovieThisWeekResponse: '',
-  trendingAllThisToday: {} as TrendingResponseType,
+  trendingAllThisToday: {} as ITrendingResponse,
   trendingAllThisTodayResponse: '',
-  trendingAllThisWeek: {} as TrendingResponseType,
+  trendingAllThisWeek: {} as ITrendingResponse,
   trendingAllThisWeekResponse: '',
-  movieDetails: {} as MovieDetailsResponseType,
+  movieDetails: {} as IMovieDetailsResponse,
   movieDetailsResponse: MovieDetailsResponseStatusType.pending,
   tvDetails: {} as object,
   tvDetailsResponse: TvDetailsResponseStatusType.pending
@@ -63,11 +63,11 @@ const MovieSlice = createSlice({
     setTrendingAllThisWeek: (state, action) => {
       state.trendingAllThisWeek = action.payload
     },
-    setMovieDetails: (state, action: PayloadAction<MovieDetailsResponseType>) => {
+    setMovieDetails: (state, action: PayloadAction<IMovieDetailsResponse>) => {
       state.movieDetails = action.payload
       state.movieDetails.release_date = action.payload.release_date.slice(0, 4)
     },
-    setTvDetails: (state, action) => {
+    setTvDetails: (state: MovieState, action) => {
       state.tvDetails = action.payload
     }
   },
@@ -80,7 +80,6 @@ const MovieSlice = createSlice({
       };
     });
     builder.addCase(getPopularMovies.fulfilled, (state, action) => {
-
       return {
         ...state,
         loading: false,
@@ -95,6 +94,7 @@ const MovieSlice = createSlice({
         loading: false,
       };
     });
+
     builder.addCase(getTrendingMovieToday.pending, (state, action) => {
       return {
         ...state,
@@ -117,6 +117,7 @@ const MovieSlice = createSlice({
         loading: false,
       };
     });
+
     builder.addCase(getTrendingMovieThisWeek.pending, (state, action) => {
       return {
         ...state,
@@ -139,6 +140,7 @@ const MovieSlice = createSlice({
         loading: false,
       };
     });
+
     builder.addCase(getTrendingAllToday.pending, (state, action) => {
       return {
         ...state,
@@ -161,6 +163,7 @@ const MovieSlice = createSlice({
         loading: false,
       };
     });
+
     builder.addCase(getTrendingAllThisWeek.pending, (state, action) => {
       return {
         ...state,
@@ -183,6 +186,7 @@ const MovieSlice = createSlice({
         loading: false,
       };
     });
+
     builder.addCase(getMovieDetails.pending, (state, action) => {
       return {
         ...state,
@@ -190,12 +194,13 @@ const MovieSlice = createSlice({
         loading: true,
       };
     });
-    builder.addCase(getMovieDetails.fulfilled, (state, action) => {
+    builder.addCase(getMovieDetails.fulfilled, (state: MovieState, action: PayloadAction<IMovieDetailsResponse>) => {
       return {
         ...state,
         movieDetailsResponse: action.type,
         loading: false,
-        movieDetails: action.payload,
+        movieDetails: action.payload
+
       };
     });
     builder.addCase(getMovieDetails.rejected, (state, action) => {
@@ -205,6 +210,7 @@ const MovieSlice = createSlice({
         loading: false,
       };
     });
+
     builder.addCase(getTvDetails.pending, (state, action) => {
       return {
         ...state,

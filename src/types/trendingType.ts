@@ -1,7 +1,7 @@
-import { MediaTypeEnum } from "@/enums/enums"
+import { MediaType } from "@/enums/enums"
 
 
-export interface TrendingResponseType {
+export interface ITrendingResponse {
   page: number,
   results: [
     {
@@ -15,7 +15,7 @@ export interface TrendingResponseType {
       original_name: string,
       overview: string,
       poster_path: string,
-      media_type: MediaTypeEnum,
+      media_type: MediaType,
       genre_ids: number[],
       popularity: number,
       first_air_date: string

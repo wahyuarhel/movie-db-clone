@@ -1,14 +1,14 @@
 
 
-export interface PopularMovieResponseType {
+export interface IPopularMovieResponse {
   page: number,
-  results: PopularMovieResultType[],
+  results: IPopularMovieResult[],
   totalPages: number,
   totalResult: number,
 }
 
 
-export interface PopularMovieResultType {
+export interface IPopularMovieResult {
   adult: boolean,
   backdrop_path: string,
   genre_id: string[],
