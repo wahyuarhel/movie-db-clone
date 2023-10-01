@@ -70,7 +70,6 @@ function CircularPercentage(props: ICircularPercentage) {
             fontFamily: 'Manrope'
           }}>{percentage != 0 ? percentage : 'NR'}</p>
           {percentage != 0 ? <p className='text-white text-[8px] pt-[3px]'>%</p> : null}
-
         </div>
       </CircularProgressbarWithChildren>
     </div>

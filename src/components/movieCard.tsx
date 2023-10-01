@@ -60,7 +60,7 @@ function MovieCard(props: IMovieCard) {
         <div className='absolute z-10 top-2 right-2 text-white opacity-50 hover:text-[rgb(1,180,228)] hover:opacity-100 cursor-pointer'>
           <PiDotsThreeCircleFill size={25} />
         </div>
-        <Link href={href} >
+        <Link href={href} scroll={false}>
           <div className='w-[150px] h-[225px] relative'>
             <Image
               src={imgSrc}
@@ -76,7 +76,7 @@ function MovieCard(props: IMovieCard) {
         <div className='absolute z-1 top-[-20px] left-[10px] '>
           <CircularPercentage value={rate} />
         </div>
-        <Link href={href} >
+        <Link href={href} scroll={false} >
           <p className='font-semibold pt-3 hover:text-lightBlue'>{title}</p>
         </Link>
         <p className='text-gray-400'>{releaseDate}</p>

@@ -5,6 +5,7 @@ import { getTvDetails } from '../action/tvAction';
 import { IMovieDetailsResponse } from '@/types/movieDetailsType';
 import { IPopularMovieResponse } from '@/types/popularMovieType';
 import { ITrendingResponse } from '@/types/trendingType';
+import { ITvDetailsResponse } from '@/types/tvDetailType';
 
 
 export type MovieState = {
@@ -21,7 +22,7 @@ export type MovieState = {
   trendingAllThisWeekResponse: string
   movieDetails: IMovieDetailsResponse,
   movieDetailsResponse: string,
-  tvDetails: object,
+  tvDetails: ITvDetailsResponse,
   tvDetailsResponse: string,
 }
 
@@ -39,7 +40,7 @@ const initialState: MovieState = {
   trendingAllThisWeekResponse: '',
   movieDetails: {} as IMovieDetailsResponse,
   movieDetailsResponse: MovieDetailsResponseStatusType.pending,
-  tvDetails: {} as object,
+  tvDetails: {} as ITvDetailsResponse,
   tvDetailsResponse: TvDetailsResponseStatusType.pending
 }
 
@@ -211,14 +212,14 @@ const MovieSlice = createSlice({
       };
     });
 
-    builder.addCase(getTvDetails.pending, (state, action) => {
+    builder.addCase(getTvDetails.pending, (state: MovieState, action) => {
       return {
         ...state,
         tvDetailsResponse: action.type,
         loading: true,
       };
     });
-    builder.addCase(getTvDetails.fulfilled, (state, action) => {
+    builder.addCase(getTvDetails.fulfilled, (state, action: PayloadAction<ITvDetailsResponse>) => {
       return {
         ...state,
         tvDetailsResponse: action.type,

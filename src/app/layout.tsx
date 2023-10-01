@@ -20,10 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}
-        suppressHydrationWarning={true}>
+        suppressHydrationWarning={true} >
         <Providers>
           <Navbar />
-          <div className='min-h-screen bg-white mt-[64px]'>
+          <div className='min-h-[calc(100vh-(350px))] bg-white mt-[64px]'>
             {children}
           </div>
           <Footer />

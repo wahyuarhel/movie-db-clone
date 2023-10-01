@@ -1,12 +1,12 @@
 'use client'
-import MovieDetailContent from '@/app/movie/[id]/movieDetailsContent'
+import DetailsContent from '@/app/movie/[id]/movieDetailsContent'
 import FailedContent from '@/components/failedContent'
 import LoadingModal from '@/components/loadingModal'
 import { TvDetailsResponseStatusType } from '@/enums/enums'
 import { getTvDetails } from '@/redux/action/tvAction'
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook'
 import { useParams } from 'next/navigation'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 
 function TvDetailsPage() {
   const params = useParams()
@@ -18,8 +18,7 @@ function TvDetailsPage() {
 
 
   if (tvDetailsResponse == TvDetailsResponseStatusType.fulfilled)
-    // return <MovieDetailContent contentData={tvDetails} />
-    return <div>{params.id}</div>
+    return <code>{JSON.stringify(tvDetails)}</code>
   else if (tvDetailsResponse === TvDetailsResponseStatusType.rejected)
     return (<FailedContent />)
   else

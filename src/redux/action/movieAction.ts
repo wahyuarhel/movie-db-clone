@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Endpoint from "../api/api";
+import { IMovieDetailsResponse } from "@/types/movieDetailsType";
 
 
 export const getPopularMovies = createAsyncThunk(
   'getPopularMovies',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await Endpoint.get(`/movie/popular?language=en-US&page=1&${process.env.NEXT_PUBLIC_API_KEY}`);
+      const response = await Endpoint.get(`/movie/popular`);
       if (response.status === 200) {
         return response.data;
       }
@@ -20,7 +21,7 @@ export const getTrendingAllToday = createAsyncThunk(
   'getTrendingAllToday',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await Endpoint.get(`/trending/all/day?language=en-US&${process.env.NEXT_PUBLIC_API_KEY}`);
+      const response = await Endpoint.get(`/trending/all/day`);
       if (response.status === 200) {
         return response.data;
       }
@@ -33,7 +34,7 @@ export const getTrendingAllThisWeek = createAsyncThunk(
   'getTrendingAllThisWeek',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await Endpoint.get(`/trending/all/week?language=en-US&${process.env.NEXT_PUBLIC_API_KEY}`);
+      const response = await Endpoint.get(`/trending/all/week`);
       if (response.status === 200) {
         return response.data;
       }
@@ -46,7 +47,7 @@ export const getTrendingMovieToday = createAsyncThunk(
   'getTrendingMovieToday',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await Endpoint.get(`/trending/movie/day?language=en-US&${process.env.NEXT_PUBLIC_API_KEY}`);
+      const response = await Endpoint.get(`/trending/movie/day`);
       if (response.status === 200) {
         return response.data;
       }
@@ -59,7 +60,7 @@ export const getTrendingMovieThisWeek = createAsyncThunk(
   'getTrendingMovieWeek',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await Endpoint.get(`/trending/movie/week?language=en-US&${process.env.NEXT_PUBLIC_API_KEY}`);
+      const response = await Endpoint.get(`/trending/movie/week`);
       if (response.status === 200) {
         return response.data;
       }
@@ -68,11 +69,18 @@ export const getTrendingMovieThisWeek = createAsyncThunk(
     }
   }
 );
+
+
 export const getMovieDetails = createAsyncThunk(
   'getMovieDetails',
   async (id: string | string[], { rejectWithValue }) => {
     try {
-      const response = await Endpoint.get(`/movie/${id}?language=en-US&${process.env.NEXT_PUBLIC_API_KEY}`);
+      const response = await Endpoint.get<IMovieDetailsResponse>(`/movie/${id}`,
+        {
+          params: {
+            append_to_response: 'videos,credits,keywords,external_ids,reviews'
+          }
+        });
       if (response.status === 200) {
         return response.data;
       }
