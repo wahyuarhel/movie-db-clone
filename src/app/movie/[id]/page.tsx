@@ -14,7 +14,7 @@ function MovieDetailsPage() {
   const dispatch = useAppDispatch()
   const { movieDetails, movieDetailsResponse }: MovieState = useAppSelector(state => state.movie)
   useEffect(() => {
-    dispatch(getMovieDetails(id))
+    dispatch(getMovieDetails(id as string))
   }, [dispatch, id])
 
   if (movieDetailsResponse == MovieDetailsResponseStatusType.fulfilled)

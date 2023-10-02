@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Endpoint from "../api/api";
-import { IMovieDetailsResponse } from "@/types/movieDetailsType";
+import { ICreditByMovieIdResponse, IMovieDetailsResponse } from "@/types/movieDetailsType";
 
 
 export const getPopularMovies = createAsyncThunk(
@@ -73,7 +73,7 @@ export const getTrendingMovieThisWeek = createAsyncThunk(
 
 export const getMovieDetails = createAsyncThunk(
   'getMovieDetails',
-  async (id: string | string[], { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
       const response = await Endpoint.get<IMovieDetailsResponse>(`/movie/${id}`,
         {
@@ -82,10 +82,25 @@ export const getMovieDetails = createAsyncThunk(
           }
         });
       if (response.status === 200) {
+        return await response.data;
+      }
+      else { return rejectWithValue('failed to try catch getMovieDetails') }
+    } catch (err: any) {
+      return rejectWithValue(`error catch getMovieDetails : ${err}`);
+    }
+  }
+);
+
+export const getCreditByMovieId = createAsyncThunk(
+  'getCreditByMovieId',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await Endpoint.get(`/movie/${id}/credits`);
+      if (response.status === 200) {
         return response.data;
       }
     } catch (err: any) {
-      return rejectWithValue(`error catch getMovieDetails : ${err}`);
+      return rejectWithValue(`error catch getCreditByMovieId : ${err}`);
     }
   }
 );

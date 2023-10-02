@@ -34,34 +34,42 @@ export interface ISpokenLanguageResponse {
   iso_639_1: string
   name: string
 }
-export interface ICreditREsponse {
-  cast: {
-    adult: boolean,
-    gender: number,
-    id: number,
-    known_for_department: string,
-    name: string,
-    original_name: string,
-    popularity: number,
-    profile_path: string,
-    cast_id: number,
-    character: string,
-    credit_id: string,
-    order: number
-  }[]
-  crew: {
-    adult: boolean,
-    gender: number,
-    id: number,
-    known_for_department: string,
-    name: string,
-    original_name: string,
-    popularity: number,
-    profile_path: string | null,
-    credit_id: string,
-    department: string,
-    job: string
-  }[]
+
+export interface ICast {
+  adult: boolean,
+  gender: number,
+  id: number,
+  known_for_department: string,
+  name: string,
+  original_name: string,
+  popularity: number,
+  profile_path: string,
+  cast_id: number,
+  character: string,
+  credit_id: string,
+  order: number
+}
+
+export interface ICrew {
+  adult: boolean,
+  gender: number,
+  id: number,
+  known_for_department: string,
+  name: string,
+  original_name: string,
+  popularity: number,
+  profile_path: string | null,
+  credit_id: string,
+  department: string,
+  job: string
+}
+export interface ICreditResponse {
+  cast: ICast[]
+  crew: ICrew[]
+}
+export interface ICreditByMovieIdResponse extends ICreditResponse {
+  id: string,
+
 }
 
 export interface IKeywordResponse {
@@ -74,7 +82,7 @@ export interface IMovieDetailsResponse {
   backdrop_path: string
   belongs_to_collection: string
   budget: number
-  credits: ICreditREsponse
+  credits: ICreditResponse
   genres: IGenreResponse[]
   homepage: string
   id: number

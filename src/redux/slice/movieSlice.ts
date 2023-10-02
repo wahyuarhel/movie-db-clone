@@ -1,14 +1,14 @@
-import { MovieDetailsResponseStatusType, TvDetailsResponseStatusType } from '@/enums/enums';
+import { CreditByMovieIdResponseStatusType, MovieDetailsResponseStatusType, TvDetailsResponseStatusType } from '@/enums/enums';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { getMovieDetails, getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday, getTrendingMovieThisWeek, getTrendingMovieToday } from '../action/movieAction';
+import { getCreditByMovieId, getMovieDetails, getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday, getTrendingMovieThisWeek, getTrendingMovieToday } from '../action/movieAction';
 import { getTvDetails } from '../action/tvAction';
-import { IMovieDetailsResponse } from '@/types/movieDetailsType';
+import { ICreditByMovieIdResponse, IMovieDetailsResponse } from '@/types/movieDetailsType';
 import { IPopularMovieResponse } from '@/types/popularMovieType';
 import { ITrendingResponse } from '@/types/trendingType';
 import { ITvDetailsResponse } from '@/types/tvDetailType';
 
 
-export type MovieState = {
+export interface MovieState {
   loading: boolean
   popularMovies: IPopularMovieResponse
   popularMovieResponse: string
@@ -24,6 +24,8 @@ export type MovieState = {
   movieDetailsResponse: string,
   tvDetails: ITvDetailsResponse,
   tvDetailsResponse: string,
+  credit: ICreditByMovieIdResponse
+  creditResponse: string
 }
 
 const initialState: MovieState = {
@@ -39,9 +41,11 @@ const initialState: MovieState = {
   trendingAllThisWeek: {} as ITrendingResponse,
   trendingAllThisWeekResponse: '',
   movieDetails: {} as IMovieDetailsResponse,
-  movieDetailsResponse: MovieDetailsResponseStatusType.pending,
+  movieDetailsResponse: '',
   tvDetails: {} as ITvDetailsResponse,
-  tvDetailsResponse: TvDetailsResponseStatusType.pending
+  tvDetailsResponse: TvDetailsResponseStatusType.pending,
+  credit: {} as ICreditByMovieIdResponse,
+  creditResponse: CreditByMovieIdResponseStatusType.pending
 }
 
 const MovieSlice = createSlice({
@@ -195,7 +199,7 @@ const MovieSlice = createSlice({
         loading: true,
       };
     });
-    builder.addCase(getMovieDetails.fulfilled, (state: MovieState, action: PayloadAction<IMovieDetailsResponse>) => {
+    builder.addCase(getMovieDetails.fulfilled, (state, action) => {
       return {
         ...state,
         movieDetailsResponse: action.type,
@@ -231,6 +235,30 @@ const MovieSlice = createSlice({
       return {
         ...state,
         tvDetailsResponse: action.type,
+        loading: false,
+      };
+    });
+
+    builder.addCase(getCreditByMovieId.pending, (state, action) => {
+      return {
+        ...state,
+        creditResponse: action.type,
+        loading: true,
+      };
+    });
+
+    builder.addCase(getCreditByMovieId.fulfilled, (state, action) => {
+      return {
+        ...state,
+        creditResponse: action.type,
+        loading: false,
+        credit: action.payload,
+      };
+    });
+    builder.addCase(getCreditByMovieId.rejected, (state, action) => {
+      return {
+        ...state,
+        creditResponse: action.type,
         loading: false,
       };
     });

@@ -32,3 +32,9 @@ export enum TvDetailsResponseStatusType {
   fulfilled = 'getTvDetails/fulfilled',
   rejected = 'getTvDetails/rejected'
 }
+
+export enum CreditByMovieIdResponseStatusType {
+  pending = 'getCreditByMovieId/pending',
+  fulfilled = 'getCreditByMovieId/fulfilled',
+  rejected = 'getCreditByMovieId/rejected'
+}

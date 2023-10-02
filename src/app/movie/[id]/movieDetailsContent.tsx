@@ -10,6 +10,10 @@ import React from 'react'
 import { FaList } from 'react-icons/fa'
 import { MdBookmark, MdFavorite, MdPlayArrow, MdStar } from 'react-icons/md'
 import { HiOutlineArrowNarrowRight } from 'react-icons/hi'
+import { Divider } from '@nextui-org/divider'
+import { Tooltip } from '@nextui-org/tooltip'
+import ToolTipContent from '@/app/components/tooltipContent'
+import CustomTooltip from '@/app/components/tooltipContent'
 
 interface IMovieDetailContent {
   movieData: IMovieDetailsResponse
@@ -31,13 +35,15 @@ function MovieDetailContent(props: IMovieDetailContent) {
         style={{ backgroundImage: `url(${backdropUrlSizeW1280}${movieData.backdrop_path})` }}>
         <div className='bg-blend-screen bg-gray-950/70 p-10 bg-right'>
           <div className='container m-auto flex gap-10'>
-            <div className='max-h-[450px] max-w-[300px]'>
-              <Image
-                src={posterUrlSizeW342 + movieData.poster_path}
-                alt={movieData.title}
-                width={340}
-                height={340}
-                className='rounded-xl' />
+            <div>
+              <div className='max-h-[450px] max-w-[300px]'>
+                <Image
+                  src={posterUrlSizeW342 + movieData.poster_path}
+                  alt={movieData.title}
+                  width={340}
+                  height={340}
+                  className='rounded-xl' />
+              </div>
             </div>
             <div className='flex flex-col justify-center'>
               <div className='title mb-5'>
@@ -85,18 +91,26 @@ function MovieDetailContent(props: IMovieDetailContent) {
                   </div>
                   <span className='font-semibold'>User<br />Score</span>
                 </div>
-                <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
-                  <FaList size={16} />
-                </Link>
-                <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
-                  <MdFavorite size={16} />
-                </Link>
-                <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
-                  <MdBookmark size={16} />
-                </Link>
-                <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
-                  <MdStar size={16} />
-                </Link>
+                <CustomTooltip label='Login to create and edit custom lists'>
+                  <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
+                    <FaList size={16} />
+                  </Link>
+                </CustomTooltip>
+                <CustomTooltip label='Login to add this movie to your favorite list'>
+                  <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
+                    <MdFavorite size={16} />
+                  </Link>
+                </CustomTooltip>
+                <CustomTooltip label='Login to add this movie to your watchlist'>
+                  <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
+                    <MdBookmark size={16} />
+                  </Link>
+                </CustomTooltip>
+                <CustomTooltip label='Login to rate this movie'>
+                  <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
+                    <MdStar size={16} />
+                  </Link>
+                </CustomTooltip>
                 <div>
                   <Link href='' className='flex items-center gap-2 transition-colors duration-300 ease-in-out hover:text-gray-400'>
                     <MdPlayArrow size={20} />
@@ -168,6 +182,13 @@ function MovieDetailContent(props: IMovieDetailContent) {
                     <HiOutlineArrowNarrowRight size={20} />
                   </div>
                 </Link>
+              </div>
+              <Link href={`/movie/${movieData.id}/cast`}>
+                <p className='py-5 hover:text-gray-500 font-semibold'>Full & Cast Crew</p>
+              </Link>
+              <Divider className='my-3' />
+              <div>
+                <p className='text-2xl font-semibold'>Social</p>
               </div>
             </div>
             <div className=''>
