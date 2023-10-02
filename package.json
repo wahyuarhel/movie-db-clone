@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@netlify/plugin-nextjs": "^4.36.1",
     "@nextui-org/card": "^2.0.21",
     "@nextui-org/divider": "^2.0.20",
     "@nextui-org/progress": "^2.0.21",
