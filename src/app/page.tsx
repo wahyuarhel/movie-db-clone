@@ -1,13 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 import MovieCard, { MovieCardPlaceholder } from '@/components/movieCard';
-import { getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday } from '@/redux/action/movieAction';
-import { posterUrlSizeW342 } from '@/redux/api/endpoint';
+import { fetchMovieDetails, getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday } from '@/redux/action/movieAction';
+import { posterUrlSizeW185, posterUrlSizeW342 } from '@/redux/api/endpoint';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook';
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { HeaderHome } from './components/headerHome';
-import { MediaType, PopularMoviesResponseType } from '@/enums/enums';
+import { MediaType, MovieDetailsResponseStatusType, PopularMoviesResponseType } from '@/enums/enums';
+import { useRouter } from 'next/navigation';
+import LoadingModal from '@/components/loadingModal';
+import FailedContent from '@/components/failedContent';
 
 
 export default function Home() {
@@ -15,11 +18,12 @@ export default function Home() {
   const {
     popularMovies,
     popularMovieResponse,
+    movieDetailsResponse
   } = useAppSelector(state => state.movie)
 
   useEffect(() => {
     dispatch(getPopularMovies())
-  }, [])
+  }, [dispatch])
   const randomIndex = Math.floor(Math.random() * 10)
 
   return (
@@ -39,6 +43,7 @@ export default function Home() {
 
 function TrendingMovie() {
   const dispatch = useAppDispatch()
+  const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
   const [isToday, setIsToday] = useState(true)
   const {
@@ -58,6 +63,7 @@ function TrendingMovie() {
     dispatch(getTrendingAllToday())
     dispatch(getTrendingAllThisWeek())
   }, [])
+
 
   return (
     <section className='pt-5 bg-no-repeat bg-[center_bottom_3rem]'
@@ -80,7 +86,7 @@ function TrendingMovie() {
               <MovieCard
                 key={movie.id}
                 href={movie.media_type == MediaType.movie ? `/movie/${movie.id}` : `/tv/${movie.id}`}
-                imgSrc={`${posterUrlSizeW342}${movie.poster_path}`}
+                imgSrc={posterUrlSizeW185 + movie.poster_path}
                 title={movie.media_type === MediaType.movie ? movie.title : movie.name}
                 rate={movie.vote_average}
                 releaseDate={movie.media_type === MediaType.movie ? movie.release_date : movie.first_air_date}

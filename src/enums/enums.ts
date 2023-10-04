@@ -22,9 +22,9 @@ export enum MediaType {
 }
 
 export enum MovieDetailsResponseStatusType {
-  pending = 'getMovieDetails/pending',
-  fulfilled = 'getMovieDetails/fulfilled',
-  rejected = 'getMovieDetails/rejected'
+  pending = 'fetchMovieDetails/pending',
+  fulfilled = 'fetchMovieDetails/fulfilled',
+  rejected = 'fetchMovieDetails/rejected'
 }
 
 export enum TvDetailsResponseStatusType {

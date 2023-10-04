@@ -51,7 +51,7 @@ function Navbar() {
   }
 
   return (
-    <div className='bg-[#032541] fixed top-0 w-[100%] h-[64px] flex z-[1000]'>
+    <div className='bg-[#032541] fixed top-0 w-[100%] h-[64px] flex z-[100]'>
       <div className='container m-auto flex flex-row gap-5 justify-between items-center'>
         <div className='flex flex-row gap-3 items-center'>
           <Link href={'/'}>

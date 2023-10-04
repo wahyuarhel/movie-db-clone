@@ -71,8 +71,8 @@ export const getTrendingMovieThisWeek = createAsyncThunk(
 );
 
 
-export const getMovieDetails = createAsyncThunk(
-  'getMovieDetails',
+export const fetchMovieDetails = createAsyncThunk(
+  'fetchMovieDetails',
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await Endpoint.get<IMovieDetailsResponse>(`/movie/${id}`,
@@ -82,11 +82,11 @@ export const getMovieDetails = createAsyncThunk(
           }
         });
       if (response.status === 200) {
-        return await response.data;
+        return response.data;
       }
-      else { return rejectWithValue('failed to try catch getMovieDetails') }
+      else { return rejectWithValue('failed to try catch fetchMovieDetails') }
     } catch (err: any) {
-      return rejectWithValue(`error catch getMovieDetails : ${err}`);
+      return rejectWithValue(`error catch fetchMovieDetails : ${err}`);
     }
   }
 );
@@ -96,6 +96,20 @@ export const getCreditByMovieId = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await Endpoint.get(`/movie/${id}/credits`);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (err: any) {
+      return rejectWithValue(`error catch getCreditByMovieId : ${err}`);
+    }
+  }
+);
+
+export const getRecommendationMovieByMovieId = createAsyncThunk(
+  'getCreditByMovieId',
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await Endpoint.get(`/movie/${id}/recommendations`);
       if (response.status === 200) {
         return response.data;
       }

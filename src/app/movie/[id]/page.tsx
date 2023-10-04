@@ -2,7 +2,7 @@
 import FailedContent from '@/components/failedContent'
 import LoadingModal from '@/components/loadingModal'
 import { MovieDetailsResponseStatusType } from '@/enums/enums'
-import { getMovieDetails } from '@/redux/action/movieAction'
+import { fetchMovieDetails } from '@/redux/action/movieAction'
 import { MovieState } from '@/redux/slice/movieSlice'
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook'
 import { useParams } from 'next/navigation'
@@ -14,15 +14,20 @@ function MovieDetailsPage() {
   const dispatch = useAppDispatch()
   const { movieDetails, movieDetailsResponse }: MovieState = useAppSelector(state => state.movie)
   useEffect(() => {
-    dispatch(getMovieDetails(id as string))
-  }, [dispatch, id])
+    dispatch(fetchMovieDetails(id as string))
+  }, [dispatch, id,])
 
+
+
+
+  console.log('movieDetailsResponse:', movieDetailsResponse)
   if (movieDetailsResponse == MovieDetailsResponseStatusType.fulfilled)
     return <MovieDetailContent movieData={movieDetails} />
   else if (movieDetailsResponse == MovieDetailsResponseStatusType.rejected)
     return (<FailedContent />)
   else
-    return <LoadingModal />
+    return <LoadingModal isOpen={movieDetailsResponse == MovieDetailsResponseStatusType.pending} />
+
 }
 
 export default MovieDetailsPage

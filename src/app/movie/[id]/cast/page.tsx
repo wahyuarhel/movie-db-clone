@@ -4,7 +4,7 @@ import { profileUrlSizeW185 } from '@/redux/api/endpoint'
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { BiSolidUser } from 'react-icons/bi'
 
 function CastPage() {
@@ -14,8 +14,18 @@ function CastPage() {
 
   const getDeptOfCrew = credit.crew?.filter((item, index, self) => self.findIndex((el) => el.department === item.department) === index).map((e) => e.department).sort();
   const getCrewNameByDept = (e: string) => credit.crew?.filter((el) => el.department === e).sort();
+
+  type CrewAndDeptType = {
+    name: string,
+    dept: string[]
+  }
+  const [crewNameAndDept, setCrewNameAndDept] = useState<CrewAndDeptType[]>([])
+
+  const getCrewName = credit.crew?.filter((item, index, self) => self.findIndex((el) => el.department === item.department)).map((e) => e.name && e.job).sort();
+  console.log('getCrewName', getCrewName)
   useEffect(() => {
     dispatch(getCreditByMovieId(id as string))
+
   }, [dispatch, id])
 
   return (

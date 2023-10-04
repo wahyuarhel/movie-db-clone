@@ -52,7 +52,7 @@ function MovieCard(props: IMovieCard) {
     useShadow = true,
     imgStyle = 'rounded-lg',
     cardStyle = 'border rounded-lg',
-    href = '#'
+    href = '#',
   } = props
   return (
     <div className={`${useShadow ? 'shadow-lg' : ''} rounded-lg ${bgColor}`}>
@@ -60,14 +60,19 @@ function MovieCard(props: IMovieCard) {
         <div className='absolute z-10 top-2 right-2 text-white opacity-50 hover:text-[rgb(1,180,228)] hover:opacity-100 cursor-pointer'>
           <PiDotsThreeCircleFill size={25} />
         </div>
-        <Link href={href} scroll={false}>
-          <div className='w-[150px] h-[225px] relative'>
+        <Link href={href} className='cursor-pointer' scroll={false}>
+          <div className='w-[150px] h-[225px]'>
             <Image
+              priority
               src={imgSrc}
               alt={title}
+              width={185}
+              height={185}
+              style={{
+                width: '100%',
+                height: '100%',
+              }}
               className={`cursor-pointer ${imgStyle}`}
-              sizes="320"
-              fill
             />
           </div>
         </Link>
@@ -76,7 +81,7 @@ function MovieCard(props: IMovieCard) {
         <div className='absolute z-1 top-[-20px] left-[10px] '>
           <CircularPercentage value={rate} />
         </div>
-        <Link href={href} scroll={false} >
+        <Link href={href} className='cursor-pointer' scroll={false}>
           <p className='font-semibold pt-3 hover:text-lightBlue'>{title}</p>
         </Link>
         <p className='text-gray-400'>{releaseDate}</p>

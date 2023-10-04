@@ -77,6 +77,26 @@ export interface IKeywordResponse {
   name: string
 }
 
+export interface IReviewResponse {
+  page: number
+  results: {
+    author: string
+    author_details: {
+      avatar_path: string | null
+      name: string
+      rating: number | null
+      username: string
+    }
+    content: string
+    created_at: Date
+    id: string
+    updated_at: Date
+    url: string
+  }[]
+  total_pages: number
+  total_results: number
+}
+
 export interface IMovieDetailsResponse {
   adult: boolean
   backdrop_path: string
@@ -88,10 +108,7 @@ export interface IMovieDetailsResponse {
   id: number
   imdb_id: string
   keywords: {
-    keywords: {
-      id: number
-      name: string
-    }[]
+    keywords: IKeywordResponse[]
   }
   original_language: string
   original_title: string
@@ -102,6 +119,7 @@ export interface IMovieDetailsResponse {
   production_countries: IProductionCountryResponse[]
   release_date: string
   revenue: number
+  reviews: IReviewResponse
   runtime: number
   spoken_languages: ISpokenLanguageResponse[]
   status: string

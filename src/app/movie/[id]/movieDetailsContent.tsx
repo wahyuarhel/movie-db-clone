@@ -1,19 +1,22 @@
 'use client'
-import { backdropUrlSizeW1280, posterUrlSizeOriginal, posterUrlSizeW342, profileUrlSizeW185, profileUrlSizeW300 } from '@/redux/api/endpoint'
+import ModalVideoPlayer from '@/app/components/modalVideoPlayer'
+import CustomTooltip from '@/app/components/tooltipContent'
+import { backdropUrlSizeW1280, posterUrlSizeW342, profileUrlSizeW185 } from '@/redux/api/endpoint'
 import { IMovieDetailsResponse } from '@/types/movieDetailsType'
-import { convertNumberToTimeFormat } from '@/utils/utlis'
-import { Card, CardFooter } from '@nextui-org/card'
+import { Utils } from '@/utils/utlis'
+import { Card, CardBody } from '@nextui-org/card'
+import { Chip } from '@nextui-org/chip'
+import { Divider } from '@nextui-org/divider'
+import { useDisclosure } from '@nextui-org/modal'
 import { CircularProgress } from '@nextui-org/progress'
+import { ScrollShadow } from '@nextui-org/scroll-shadow'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { FaList } from 'react-icons/fa'
-import { MdBookmark, MdFavorite, MdPlayArrow, MdStar } from 'react-icons/md'
 import { HiOutlineArrowNarrowRight } from 'react-icons/hi'
-import { Divider } from '@nextui-org/divider'
-import { Tooltip } from '@nextui-org/tooltip'
-import ToolTipContent from '@/app/components/tooltipContent'
-import CustomTooltip from '@/app/components/tooltipContent'
+import { IoStar } from 'react-icons/io5'
+import { MdBookmark, MdFavorite, MdPlayArrow, MdStar } from 'react-icons/md'
 
 interface IMovieDetailContent {
   movieData: IMovieDetailsResponse
@@ -22,27 +25,48 @@ function MovieDetailContent(props: IMovieDetailContent) {
   const {
     movieData,
   } = props
+
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const reviews = movieData?.reviews?.results
+  const getRandomIndex = Utils.generateRandomNumber(reviews.length)
+  const filterReviewThatHaveRate = movieData?.reviews?.results?.filter((item) => item.author_details.rating !== null)
+  function truncate(str: string) {
+    return str?.length > 700 ? str.substring(0, 699) + "..." : str;
+  }
+
   return (
-    <main>
-      <Section1 />
-      <Section2 />
-    </main>
+    <>
+      <ModalVideoPlayer isOpen={isOpen} onOpenChange={onOpenChange} videoId='2m1drlOZSDw' />
+      <main>
+        <Section1 />
+        <Section2 />
+      </main>
+    </>
   )
+
 
   function Section1() {
     return (
       <section className='w-full bg-cover bg-no-repeat text-white'
         style={{ backgroundImage: `url(${backdropUrlSizeW1280}${movieData.backdrop_path})` }}>
-        <div className='bg-blend-screen bg-gray-950/70 p-10 bg-right'>
+        <div className={`bg-blend-screen bg-gray-950/60 p-10 bg-right`}>
           <div className='container m-auto flex gap-10'>
             <div>
-              <div className='max-h-[450px] max-w-[300px]'>
+              <div className='h-[450px] w-[300px]'>
                 <Image
+                  id='imagePoster'
+                  priority
                   src={posterUrlSizeW342 + movieData.poster_path}
                   alt={movieData.title}
                   width={340}
                   height={340}
-                  className='rounded-xl' />
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                  className='rounded-xl object-cover' />
               </div>
             </div>
             <div className='flex flex-col justify-center'>
@@ -53,7 +77,7 @@ function MovieDetailContent(props: IMovieDetailContent) {
                   <div className='flex gap-2 items-center'>
                     <span>{movieData?.release_date}</span>
                     <span>•</span>
-                    {movieData.genres.map((e: any, i: number) =>
+                    {movieData.genres?.map((e: any, i: number) =>
                       <React.Fragment key={i}>
                         <span key={i}>{e.name}</span>
                         {i !== movieData.genres.length - 1 ?
@@ -62,7 +86,7 @@ function MovieDetailContent(props: IMovieDetailContent) {
                       </React.Fragment>
                     )}
                     <span>•</span>
-                    <p>{convertNumberToTimeFormat(movieData.runtime)}</p>
+                    <p>{Utils.convertNumberToTimeFormat(movieData.runtime)}</p>
                   </div>
                 </div>
               </div>
@@ -112,10 +136,12 @@ function MovieDetailContent(props: IMovieDetailContent) {
                   </Link>
                 </CustomTooltip>
                 <div>
-                  <Link href='' className='flex items-center gap-2 transition-colors duration-300 ease-in-out hover:text-gray-400'>
+                  <div className='flex items-center gap-2 transition-colors duration-300 ease-in-out hover:text-gray-400 cursor-pointer'
+                    onClick={onOpen}
+                  >
                     <MdPlayArrow size={20} />
                     <p className='text-md'>Play Trailer</p>
-                  </Link>
+                  </div>
                 </div>
               </div>
               <div>
@@ -125,15 +151,15 @@ function MovieDetailContent(props: IMovieDetailContent) {
               </div>
               <div className='flex gap-5 mt-5'>
                 <div className='flex-1'>
-                  <p>{movieData.credits.crew.find(e => e.job === 'Director')?.name}</p>
+                  <p>{movieData.credits?.crew?.find(e => e.job === 'Director')?.name}</p>
                   <p>Director</p>
                 </div>
                 <div className='flex-1'>
-                  <p>{movieData.credits.crew.find(e => e.job === 'Producer')?.name}</p>
+                  <p>{movieData.credits?.crew?.find(e => e.job === 'Producer')?.name}</p>
                   <p>Producer</p>
                 </div>
                 <div className='flex-1'>
-                  <p>{movieData.credits.crew.find(e => e.job === 'Editor')?.name}</p>
+                  <p>{movieData.credits?.crew?.find(e => e.job === 'Editor')?.name}</p>
                   <p>Editor</p>
                 </div>
               </div>
@@ -151,82 +177,164 @@ function MovieDetailContent(props: IMovieDetailContent) {
           <div className="grid grid-cols-4 gap-4">
             <div className='col-span-3'>
               <p className='text-xl font-semibold mb-5'>Top Billed Cast</p>
-              <div className='flex overflow-x-scroll overflow-y-hidden gap-5 pb-5 px-2'>
-                {movieData.credits.cast.slice(0, 9).map((e, i) =>
-                  <Card key={i}
-                    radius='sm'
-                    className='min-w-[150px]'
-                    shadow='md'>
-                    <Image
-                      src={profileUrlSizeW300 + e.profile_path}
-                      alt={e.name}
-                      height={500}
-                      width={300}
-                      className='object-cover'
-                      style={{
-                        height: 'auto',
-                        width: 'auto'
-                      }}
-                    />
-                    <CardFooter >
-                      <div>
-                        <p className='font-bold'>{e.name}</p>
-                        <p className='text-sm'>{e.character}</p>
-                      </div>
-                    </CardFooter>
-                  </Card>
-                )}
-                <Link href={''} className='flex w-[100px]' >
-                  <div className='flex items-center'>
-                    <p className=''>View More</p>
-                    <HiOutlineArrowNarrowRight size={20} />
+              <ScrollShadow
+                orientation="horizontal"
+                className='flex gap-5 pb-5 px-2 items-stretch'>
+                {movieData.credits?.cast.slice(0, 9).map((e, i) =>
+                  <div key={i} className='rounded-md shadow-md'>
+                    <div className='w-[137px] h-[175px]'>
+                      <Image
+                        src={profileUrlSizeW185 + e.profile_path}
+                        alt={e.name}
+                        priority
+                        width={185}
+                        height={185}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          // objectFit: 'cover'
+                        }}
+                        className='rounded-t-md object-cover object-top'
+                      />
+                    </div>
+                    <div className='p-2'>
+                      <p className='font-bold'>{e.name}</p>
+                      <p className='text-sm'>{e.character}</p>
+                    </div>
                   </div>
-                </Link>
-              </div>
+                )}
+                <div className='flex w-[137px] px-5'>
+                  <Link href={`/movie/${movieData.id}/cast`} className='flex  items-center w-max gap-1' >
+                    <p className='font-bold'>View More</p>
+                    <HiOutlineArrowNarrowRight size={20} />
+                  </Link>
+                </div>
+              </ScrollShadow>
               <Link href={`/movie/${movieData.id}/cast`}>
                 <p className='py-5 hover:text-gray-500 font-semibold'>Full & Cast Crew</p>
               </Link>
-              <Divider className='my-3' />
-              <div>
-                <p className='text-2xl font-semibold'>Social</p>
-              </div>
+              <Divider className='mb-5' />
+              <ReviewContent />
+              <Divider className='mt-10 mb-5' />
+              <RecommendationContent />
             </div>
-            <div className=''>
-              <div>
-                <p className='flex flex-col mb-5'>
-                  <strong>Original Title</strong>
-                  {movieData.original_title}
-                </p>
-                <p className='flex flex-col mb-5'>
-                  <strong>Status</strong>
-                  {movieData.status}
-                </p>
-                <p className='flex flex-col mb-5'>
-                  <strong>Budget</strong>
-                  {movieData.budget}
-                </p>
-                <p className='flex flex-col mb-5'>
-                  <strong>Revenue</strong>
-                  {movieData.revenue}
-                </p>
-                <div>
-                  <p className='font-bold mb-1'>Keywords</p>
-                  <div className='flex gap-2 flex-wrap pb-7'>
-                    {movieData.keywords.keywords.length !== 0 ?
-                      movieData.keywords.keywords.map((e, i) =>
-                        <p key={i}
-                          className='border p-2 rounded-md cursor-pointer text-sm bg-lightGrey'>{e.name}</p>
-                      ) : <p>No keywords have been added.</p>
-                    }
-                  </div>
-                </div>
-              </div>
-            </div>
+            <RightContent />
           </div>
         </div>
       </section >
     )
   }
+
+  function RightContent() {
+    return (
+      <div className=''>
+        <div>
+          <p className='flex flex-col mb-5'>
+            <strong>Status</strong>
+            {movieData.status}
+          </p>
+          <p className='flex flex-col mb-5'>
+            <strong>Original Language</strong>
+            {movieData.original_language}
+          </p>
+          <p className='flex flex-col mb-5'>
+            <strong>Budget</strong>
+            {movieData.budget}
+          </p>
+          <p className='flex flex-col mb-5'>
+            <strong>Revenue</strong>
+            {movieData.revenue}
+          </p>
+          <div>
+            <p className='font-bold mb-1'>Keywords</p>
+            <div className='flex gap-2 flex-wrap pb-7'>
+              {movieData.keywords?.keywords.length !== 0 ?
+                movieData.keywords?.keywords.map((e, i) =>
+                  <p key={i}
+                    className='border p-2 rounded-md cursor-pointer text-sm bg-lightGrey'>{e.name}</p>
+                ) : <p>No keywords have been added.</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  function ReviewContent() {
+    if (movieData.reviews?.total_results !== 0) {
+      return (
+        <div className=''>
+          <p className='font-semibold'>Reviews <Chip size='sm'>{reviews.length}</Chip></p>
+          <Card className='my-3' radius='sm'>
+            <CardBody>
+              <div className={'flex gap-3'}>
+                <p className='text-white rounded-full  bg-darkBlue w-[45px] h-[45px] flex items-center justify-center'>
+                  {filterReviewThatHaveRate[getRandomIndex]?.author[0]}
+                </p>
+                <div>
+                  <p className='font-semibold text-xl'>A review by {filterReviewThatHaveRate[getRandomIndex]?.author}</p>
+                  <div>
+                    <p className='text-sm'>
+                      <span className='bg-darkBlue text-white px-2 rounded-md mr-2 inline-flex items-center' ><IoStar className='mr-1' size={10} /> {filterReviewThatHaveRate[getRandomIndex]?.author_details.rating?.toFixed(1)}</span>
+                      Written by
+                      <span className='font-semibold'>{filterReviewThatHaveRate[getRandomIndex]?.author}</span>
+                      on
+                      <span>{Utils.formateDateToString(filterReviewThatHaveRate[getRandomIndex]?.created_at, 'MMMM DD, YYYY')}</span></p>
+                  </div>
+                </div>
+              </div>
+              <div className='flex items-end'>
+                <p className='text-sm mt-3 '>
+                  {truncate(filterReviewThatHaveRate[getRandomIndex]?.content)}
+                </p>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      )
+
+    }
+    else {
+      return <p className='py-3'>There are no discussions for Reptile. Login to be first!</p>
+    }
+  }
+
+  function RecommendationContent() {
+    return (
+      <div>
+        <p className='text-xl font-semibold mb-3'>Recommendation Content</p>
+        <ScrollShadow
+          orientation="horizontal"
+          className='flex gap-5 pb-5 px-2 items-stretch'>
+          {movieData.credits?.cast.slice(0, 9).map((e, i) =>
+            <div key={i} className=''>
+              <div className='w-[250px] h-[141px]'>
+                <Image
+                  src={profileUrlSizeW185 + e.profile_path}
+                  alt={e.name}
+                  priority
+                  width={185}
+                  height={185}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover'
+                  }}
+                  className='rounded-md'
+                />
+              </div>
+              <div className='grid grid-cols-6 gap-2'>
+                <p className='col-span-5 truncate ...'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim voluptas qui error excepturi amet harum in voluptatibus rem ex! Ullam necessitatibus enim ipsa saepe voluptatem autem illo id quaerat debitis!</p>
+                <span className='text-sm flex justify-end items-center'>75%</span>
+              </div>
+            </div>
+          )}
+        </ScrollShadow >
+      </div>
+    )
+  }
+
 }
 
 export default MovieDetailContent
