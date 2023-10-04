@@ -20,9 +20,9 @@ export function HeaderHome(props: HeaderHomeProps) {
       <div className={`${props.loading ? 'bg-gradient-to-r from-gray-500 to-gray-100' : props.backgroundImage != undefined ? 'bg-center ' : ''} `}
         style={{ backgroundImage: props.backgroundImage != undefined ? `url(${backdropUrlSizeW1280}${props.backgroundImage})` : undefined }}
       >
-        <div className='bg-darkBlue/80 bg-blend-screen px-[40px] py-[120px]'>
+        <div className='bg-darkBlue/80 bg-blend-screen px-5 py-8 md:px-[40px] md:py-[120px]'>
           <p className='text-5xl text-white font-semibold'>Welcome.</p>
-          <p className='text-3xl text-white pb-10'>Millions of movies, TV shows and people to discover. Explore now.
+          <p className='text-3xl text-white pb-7 md:pb-10'>Millions of movies, TV shows and people to discover. Explore now.
           </p>
           <p></p>
           <SearchBar />
@@ -35,7 +35,8 @@ export function HeaderHome(props: HeaderHomeProps) {
 export function SearchBar() {
   return (
     <div className='flex relative'>
-      <input type="text" placeholder='Search for a movie, tv shows, person.....' className='flex-1 rounded-full px-5 py-3 outline-none ' />
+      <input type="text" placeholder='Search for a movie, tv shows, person.....' className='flex-1 rounded-full px-5 py-3 outline-none hidden md:block' />
+      <input type="text" placeholder='Search.....' className='flex-1 rounded-full px-5 py-3 outline-none md:hidden' />
       <button className='bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-3 rounded-full absolute right-[-2px] z-1 text-white'>Search</button>
     </div>
 
