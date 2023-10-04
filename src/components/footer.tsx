@@ -2,9 +2,9 @@ import React, { Fragment } from 'react'
 
 export default function Footer() {
   return (
-    <div className='bg-[#03243F] pt-10 pb-24'>
-      <div className='container m-auto flex justify-center'>
-        <div className='flex flex-row gap-10'>
+    <div className='bg-[#03243F]  px-4 py-5 md:pt-10 md:pb-24'>
+      <div className='container m-auto flex md:justify-center'>
+        <div className='flex flex-col gap-3 md:flex-row md:gap-10'>
           <div className='mr-5 text-white'>Logo</div>
           {footerContent.map((e, i) =>
             <div key={i}>

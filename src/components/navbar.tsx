@@ -2,6 +2,8 @@
 import Link from 'next/dist/client/link';
 import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
+import { GiHamburgerMenu } from 'react-icons/gi'
+import { BiSearch } from 'react-icons/bi'
 function Navbar() {
   const [menuIndex, setMenuIndex] = useState<number>()
   const menuItems = [
@@ -9,8 +11,8 @@ function Navbar() {
       title: 'Movie',
       subMenu: [
         { label: 'Popular', path: '/movie' },
-        { label: 'Now Playing', path: 'now-playing' },
-        { label: 'Upcoming', path: 'upcoming' },
+        { label: 'Now Playing', path: '/now-playing' },
+        { label: 'Upcoming', path: '/upcoming' },
         { label: 'Top Rated', path: '/top-rated' }
       ]
     },
@@ -26,9 +28,7 @@ function Navbar() {
     {
       title: 'People',
       subMenu: [
-
         { label: 'Popular People', path: '/people' }
-
       ]
     },
   ]
@@ -51,8 +51,9 @@ function Navbar() {
   }
 
   return (
-    <div className='bg-[#032541] fixed top-0 w-[100%] h-[64px] flex z-[100]'>
-      <div className='container m-auto flex flex-row gap-5 justify-between items-center'>
+    <div className='bg-[#032541] fixed top-0  w-[100%] h-[64px] flex z-[100]'>
+      {/** Navbar for desktop */}
+      <div className='hidden md:flex container m-auto gap-5 justify-between items-center flex-grow '>
         <div className='flex flex-row gap-3 items-center'>
           <Link href={'/'}>
             <div className='flex flex-row items-center gap-3 '>
@@ -63,6 +64,17 @@ function Navbar() {
           <MenuItems />
         </div>
         <div><FaPlus className='text-white' /></div>
+      </div>
+      {/** Navbar for mobile */}
+      <div className='flex justify-between md:hidden items-center flex-1 min-w-[320px]'>
+        <GiHamburgerMenu className='text-white mx-3' />
+        <Link href={'/'}>
+          <div className='flex gap-3 items-center cursor-pointer'>
+            <p className='font-extrabold text-transparent text-3xl bg-clip-text bg-gradient-to-r from-lightGreen to-lightBlue'>MovieDB</p>
+            <div className='w-[50px] h-[20px] rounded-full bg-lightBlue'></div>
+          </div>
+        </Link>
+        <BiSearch className='text-white mx-3' />
       </div>
     </div>
   );
