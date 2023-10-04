@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import Endpoint from "../api/api";
-import { ICreditByMovieIdResponse, IMovieDetailsResponse } from "@/types/movieDetailsType";
+import { IMovieDetailsResponse } from "@/types/movieDetailsType";
 
 
 export const getPopularMovies = createAsyncThunk(
@@ -106,7 +106,7 @@ export const getCreditByMovieId = createAsyncThunk(
 );
 
 export const getRecommendationMovieByMovieId = createAsyncThunk(
-  'getCreditByMovieId',
+  'getRecommendationMovieByMovieId',
   async (id: string, { rejectWithValue }) => {
     try {
       const response = await Endpoint.get(`/movie/${id}/recommendations`);
@@ -114,7 +114,7 @@ export const getRecommendationMovieByMovieId = createAsyncThunk(
         return response.data;
       }
     } catch (err: any) {
-      return rejectWithValue(`error catch getCreditByMovieId : ${err}`);
+      return rejectWithValue(`error catch getRecommendationMovieByMovieId : ${err}`);
     }
   }
 );

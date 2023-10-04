@@ -1,41 +1,42 @@
-export interface IGenreResponse {
+interface IGenreResponse {
   id: number
   name: string
 }
-export interface IProductionCountryResponse {
+interface IProductionCountryResponse {
   iso_3166_1: string
   name: string
 }
 
-export interface IProductionCompanyResponse {
+interface IProductionCompanyResponse {
   id: number
   logo_path: string
   name: string
   origin_country: string
 }
 
-
-export interface IVideoResponse {
-  results: {
-    id: string
-    iso_639_1: string,
-    iso_3166_1: string,
-    key: string,
-    name: string,
-    official: boolean,
-    published_at: Date,
-    site: string,
-    size: number,
-    type: string,
-  }
+interface IVideoDetail {
+  id: string
+  iso_639_1: string,
+  iso_3166_1: string,
+  key: string,
+  name: string,
+  official: boolean,
+  published_at: Date,
+  site: string,
+  size: number,
+  type: string,
 }
-export interface ISpokenLanguageResponse {
+
+interface IVideos {
+  results: IVideoDetail[]
+}
+interface ISpokenLanguageResponse {
   english_name: string
   iso_639_1: string
   name: string
 }
 
-export interface ICast {
+interface ICastMemberDetail {
   adult: boolean,
   gender: number,
   id: number,
@@ -50,7 +51,7 @@ export interface ICast {
   order: number
 }
 
-export interface ICrew {
+interface ICrewMemberDetail {
   adult: boolean,
   gender: number,
   id: number,
@@ -63,36 +64,40 @@ export interface ICrew {
   department: string,
   job: string
 }
-export interface ICreditResponse {
-  cast: ICast[]
-  crew: ICrew[]
+interface ICreditResponse {
+  cast: ICastMemberDetail[]
+  crew: ICrewMemberDetail[]
 }
 export interface ICreditByMovieIdResponse extends ICreditResponse {
   id: string,
-
 }
 
-export interface IKeywordResponse {
+interface IKeywordDetail {
   id: number
   name: string
 }
+interface IKeywords {
+  keywords: IKeywordDetail[]
+}
 
-export interface IReviewResponse {
+interface IAuthorDetail {
+  avatar_path: string | null
+  name: string
+  rating: number | null
+  username: string
+}
+interface IReviewResult {
+  author: string
+  author_details: IAuthorDetail
+  content: string
+  created_at: Date
+  id: string
+  updated_at: Date
+  url: string
+}
+interface IReviewResponse {
   page: number
-  results: {
-    author: string
-    author_details: {
-      avatar_path: string | null
-      name: string
-      rating: number | null
-      username: string
-    }
-    content: string
-    created_at: Date
-    id: string
-    updated_at: Date
-    url: string
-  }[]
+  results: IReviewResult[]
   total_pages: number
   total_results: number
 }
@@ -107,9 +112,7 @@ export interface IMovieDetailsResponse {
   homepage: string
   id: number
   imdb_id: string
-  keywords: {
-    keywords: IKeywordResponse[]
-  }
+  keywords: IKeywords
   original_language: string
   original_title: string
   overview: string
@@ -126,7 +129,7 @@ export interface IMovieDetailsResponse {
   tagline: string
   title: string
   video: boolean
-  videos: IVideoResponse[]
+  videos: IVideos
   vote_average: number
   vote_count: number
 }

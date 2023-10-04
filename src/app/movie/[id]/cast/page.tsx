@@ -22,7 +22,6 @@ function CastPage() {
   const [crewNameAndDept, setCrewNameAndDept] = useState<CrewAndDeptType[]>([])
 
   const getCrewName = credit.crew?.filter((item, index, self) => self.findIndex((el) => el.department === item.department)).map((e) => e.name && e.job).sort();
-  console.log('getCrewName', getCrewName)
   useEffect(() => {
     dispatch(getCreditByMovieId(id as string))
 

@@ -54,7 +54,6 @@ function TrendingMovie() {
   function onClickSwitch() {
     setIsToday(!isToday);
     if (ref.current !== null) {
-      console.log('ref.current:', ref)
       ref.current.scroll({ left: 0, behavior: 'smooth' })
     }
   }

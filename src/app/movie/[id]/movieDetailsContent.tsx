@@ -1,9 +1,11 @@
 'use client'
 import ModalVideoPlayer from '@/app/components/modalVideoPlayer'
+import RecommendationCard from '@/app/components/recommendationCard'
 import CustomTooltip from '@/app/components/tooltipContent'
 import { backdropUrlSizeW1280, posterUrlSizeW342, profileUrlSizeW185 } from '@/redux/api/endpoint'
 import { IMovieDetailsResponse } from '@/types/movieDetailsType'
-import { Utils } from '@/utils/utlis'
+import { IRecommendationMovieResponse } from '@/types/recommendationType'
+import { Utils } from '@/utils/utils'
 import { Card, CardBody } from '@nextui-org/card'
 import { Chip } from '@nextui-org/chip'
 import { Divider } from '@nextui-org/divider'
@@ -20,11 +22,14 @@ import { MdBookmark, MdFavorite, MdPlayArrow, MdStar } from 'react-icons/md'
 
 interface IMovieDetailContent {
   movieData: IMovieDetailsResponse
+  recommendationMovieById?: IRecommendationMovieResponse
 }
 function MovieDetailContent(props: IMovieDetailContent) {
   const {
     movieData,
+    recommendationMovieById
   } = props
+
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
@@ -214,9 +219,9 @@ function MovieDetailContent(props: IMovieDetailContent) {
                 <p className='py-5 hover:text-gray-500 font-semibold'>Full & Cast Crew</p>
               </Link>
               <Divider className='mb-5' />
-              <ReviewContent />
-              <Divider className='mt-10 mb-5' />
               <RecommendationContent />
+              <Divider className='mt-10 mb-5' />
+              <ReviewContent />
             </div>
             <RightContent />
           </div>
@@ -265,7 +270,10 @@ function MovieDetailContent(props: IMovieDetailContent) {
     if (movieData.reviews?.total_results !== 0) {
       return (
         <div className=''>
-          <p className='font-semibold'>Reviews <Chip size='sm'>{reviews.length}</Chip></p>
+          <div className='flex items-center gap-2'>
+            <p className='font-semibold'>Reviews</p>
+            <p className='bg-gray-500 rounded-full px-2 text-white'>{reviews.length}</p>
+          </div>
           <Card className='my-3' radius='sm'>
             <CardBody>
               <div className={'flex gap-3'}>
@@ -274,13 +282,15 @@ function MovieDetailContent(props: IMovieDetailContent) {
                 </p>
                 <div>
                   <p className='font-semibold text-xl'>A review by {filterReviewThatHaveRate[getRandomIndex]?.author}</p>
-                  <div>
-                    <p className='text-sm'>
-                      <span className='bg-darkBlue text-white px-2 rounded-md mr-2 inline-flex items-center' ><IoStar className='mr-1' size={10} /> {filterReviewThatHaveRate[getRandomIndex]?.author_details.rating?.toFixed(1)}</span>
-                      Written by
-                      <span className='font-semibold'>{filterReviewThatHaveRate[getRandomIndex]?.author}</span>
-                      on
-                      <span>{Utils.formateDateToString(filterReviewThatHaveRate[getRandomIndex]?.created_at, 'MMMM DD, YYYY')}</span></p>
+                  <div className='flex items-center gap-2'>
+                    <div className='flex items-center gap-1 text-sm text-white bg-darkBlue px-1 rounded-sm'>
+                      <IoStar size={10} />
+                      <span className='font-semibold'>{filterReviewThatHaveRate[getRandomIndex]?.author_details.rating?.toFixed(1)}</span>
+                    </div>
+                    <p className='text-sm'>Written by
+                      <span className='font-semibold ml-1'>{filterReviewThatHaveRate[getRandomIndex]?.author}</span>
+                      <span className='ml-1'>on {Utils.formateDateToString(filterReviewThatHaveRate[getRandomIndex]?.created_at, 'MMMM DD, YYYY')}</span>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -303,37 +313,26 @@ function MovieDetailContent(props: IMovieDetailContent) {
   function RecommendationContent() {
     return (
       <div>
-        <p className='text-xl font-semibold mb-3'>Recommendation Content</p>
-        <ScrollShadow
-          orientation="horizontal"
-          className='flex gap-5 pb-5 px-2 items-stretch'>
-          {movieData.credits?.cast.slice(0, 9).map((e, i) =>
-            <div key={i} className=''>
-              <div className='w-[250px] h-[141px]'>
-                <Image
-                  src={profileUrlSizeW185 + e.profile_path}
-                  alt={e.name}
-                  priority
-                  width={185}
-                  height={185}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                  }}
-                  className='rounded-md'
-                />
-              </div>
-              <div className='grid grid-cols-6 gap-2'>
-                <p className='col-span-5 truncate ...'>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim voluptas qui error excepturi amet harum in voluptatibus rem ex! Ullam necessitatibus enim ipsa saepe voluptatem autem illo id quaerat debitis!</p>
-                <span className='text-sm flex justify-end items-center'>75%</span>
-              </div>
-            </div>
-          )}
-        </ScrollShadow >
+        <p className='text-xl font-semibold mb-3'>Recommendations</p>
+        {recommendationMovieById?.total_results !== 0 ?
+          <ScrollShadow
+            orientation="horizontal"
+            className='flex gap-5 pb-5 px-2 items-stretch'>
+            {recommendationMovieById?.results?.slice(0, 9).map((e, i) =>
+              <RecommendationCard
+                key={i}
+                title={e.title}
+                imgSrc={e.backdrop_path}
+                rate={e.vote_average}
+              />
+            )}
+          </ScrollShadow >
+          : <p>{`We don't have enough data to suggest any movies based on ${movieData.title} . You can help by rating movies you've seen`}</p>}
       </div>
     )
   }
+
+
 
 }
 

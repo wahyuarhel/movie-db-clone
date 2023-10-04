@@ -1,11 +1,12 @@
-import { CreditByMovieIdResponseStatusType, MovieDetailsResponseStatusType, TvDetailsResponseStatusType } from '@/enums/enums';
+import { CreditByMovieIdResponseStatusType, MovieDetailsResponseStatusType, RecommendationMovieResponseStatusType, TvDetailsResponseStatusType } from '@/enums/enums';
 import { ICreditByMovieIdResponse, IMovieDetailsResponse } from '@/types/movieDetailsType';
 import { IPopularMovieResponse } from '@/types/popularMovieType';
 import { ITrendingResponse } from '@/types/trendingType';
 import { ITvDetailsResponse } from '@/types/tvDetailType';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { getCreditByMovieId, fetchMovieDetails, getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday, getTrendingMovieThisWeek, getTrendingMovieToday } from '../action/movieAction';
+import { getCreditByMovieId, fetchMovieDetails, getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday, getTrendingMovieThisWeek, getTrendingMovieToday, getRecommendationMovieByMovieId } from '../action/movieAction';
 import { getTvDetails } from '../action/tvAction';
+import { IRecommendationMovieResponse } from '@/types/recommendationType';
 
 
 export interface MovieState {
@@ -26,8 +27,8 @@ export interface MovieState {
   tvDetailsResponse: string,
   credit: ICreditByMovieIdResponse
   creditResponse: string
-  getRecommendationMovie: '',
-  getRecommendationMovieResponse: string,
+  recommendationMovieById: IRecommendationMovieResponse
+  recommendationMovieByIdResponse: string,
 }
 
 const initialState: MovieState = {
@@ -48,8 +49,8 @@ const initialState: MovieState = {
   tvDetailsResponse: TvDetailsResponseStatusType.pending,
   credit: {} as ICreditByMovieIdResponse,
   creditResponse: CreditByMovieIdResponseStatusType.pending,
-  getRecommendationMovie: '',
-  getRecommendationMovieResponse: ''
+  recommendationMovieById: {} as IRecommendationMovieResponse,
+  recommendationMovieByIdResponse: RecommendationMovieResponseStatusType.unknown,
 }
 
 const MovieSlice = createSlice({
@@ -262,6 +263,30 @@ const MovieSlice = createSlice({
       return {
         ...state,
         creditResponse: action.type,
+        loading: false,
+      };
+    });
+
+    builder.addCase(getRecommendationMovieByMovieId.pending, (state, action) => {
+      return {
+        ...state,
+        recommendationMovieByIdResponse: action.type,
+        loading: true,
+      };
+    });
+
+    builder.addCase(getRecommendationMovieByMovieId.fulfilled, (state, action) => {
+      return {
+        ...state,
+        recommendationMovieByIdResponse: action.type,
+        loading: false,
+        recommendationMovieById: action.payload,
+      };
+    });
+    builder.addCase(getRecommendationMovieByMovieId.rejected, (state, action) => {
+      return {
+        ...state,
+        recommendationMovieByIdResponse: action.type,
         loading: false,
       };
     });

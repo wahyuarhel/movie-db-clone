@@ -38,3 +38,9 @@ export enum CreditByMovieIdResponseStatusType {
   fulfilled = 'getCreditByMovieId/fulfilled',
   rejected = 'getCreditByMovieId/rejected'
 }
+export enum RecommendationMovieResponseStatusType {
+  unknown = '',
+  pending = 'getRecommendationMovieByMovieId/pending',
+  fulfilled = 'getRecommendationMovieByMovieId/fulfilled',
+  rejected = 'getRecommendationMovieByMovieId/rejected'
+}
