@@ -1,4 +1,5 @@
 import { backdropUrlSizeW1280, backdropUrlSizeW780 } from "@/redux/api/endpoint"
+import { useEffect, useState } from "react"
 
 
 interface HeaderHomeProps {
@@ -15,10 +16,14 @@ interface HeaderHomeProps {
 ```
  */
 export function HeaderHome(props: HeaderHomeProps) {
+  const backdropSize = backdropUrlSizeW1280 + props.backgroundImage
   return (
-    <section>
-      <div className={`${props.loading ? 'bg-gradient-to-r from-gray-500 to-gray-100' : props.backgroundImage != undefined ? 'bg-center ' : ''} `}
-        style={{ backgroundImage: props.backgroundImage != undefined ? `url(${backdropUrlSizeW1280}${props.backgroundImage})` : undefined }}
+    <section id="headerHome">
+      <div
+        className={`${props.loading ? 'bg-gradient-to-r from-gray-500 to-gray-100'
+          : props.backgroundImage !== undefined ? `bg-[length:500px_300px] bg-content1-foreground bg-no-repeat md:bg-cover bg-center md:bg-no-repeat md:bg-[top]`
+            : ''} `}
+        style={{ backgroundImage: props.backgroundImage != undefined ? `url('${backdropSize}')` : undefined }}
       >
         <div className='bg-darkBlue/80 bg-blend-screen px-5 py-8 md:px-[40px] md:py-[120px]'>
           <p className='text-5xl text-white font-semibold'>Welcome.</p>
