@@ -28,6 +28,7 @@ export enum MovieDetailsResponseStatusType {
 }
 
 export enum TvDetailsResponseStatusType {
+  idle = '',
   pending = 'getTvDetails/pending',
   fulfilled = 'getTvDetails/fulfilled',
   rejected = 'getTvDetails/rejected'

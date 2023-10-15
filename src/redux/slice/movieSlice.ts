@@ -2,11 +2,11 @@ import { CreditByMovieIdResponseStatusType, MovieDetailsResponseStatusType, Reco
 import { ICreditByMovieIdResponse, IMovieDetailsResponse } from '@/types/movieDetailsType';
 import { IPopularMovieResponse } from '@/types/popularMovieType';
 import { ITrendingResponse } from '@/types/trendingType';
-import { ITvDetailsResponse } from '@/types/tvDetailType';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { getCreditByMovieId, fetchMovieDetails, getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday, getTrendingMovieThisWeek, getTrendingMovieToday, getRecommendationMovieByMovieId } from '../action/movieAction';
 import { getTvDetails } from '../action/tvAction';
 import { IRecommendationMovieResponse } from '@/types/recommendationType';
+import { ITvDetailsResponse } from '@/types/tvDetailType';
 
 
 export interface MovieState {
@@ -24,7 +24,7 @@ export interface MovieState {
   movieDetails: IMovieDetailsResponse,
   movieDetailsResponse?: string,
   tvDetails: ITvDetailsResponse,
-  tvDetailsResponse: string,
+  tvDetailsResponseStatus: string,
   credit: ICreditByMovieIdResponse
   creditResponse: string
   recommendationMovieById: IRecommendationMovieResponse
@@ -46,7 +46,7 @@ const initialState: MovieState = {
   movieDetails: {} as IMovieDetailsResponse,
   movieDetailsResponse: MovieDetailsResponseStatusType.pending,
   tvDetails: {} as ITvDetailsResponse,
-  tvDetailsResponse: TvDetailsResponseStatusType.pending,
+  tvDetailsResponseStatus: TvDetailsResponseStatusType.idle,
   credit: {} as ICreditByMovieIdResponse,
   creditResponse: CreditByMovieIdResponseStatusType.pending,
   recommendationMovieById: {} as IRecommendationMovieResponse,
@@ -223,14 +223,14 @@ const MovieSlice = createSlice({
     builder.addCase(getTvDetails.pending, (state: MovieState, action) => {
       return {
         ...state,
-        tvDetailsResponse: action.type,
+        tvDetailsResponseStatus: action.type,
         loading: true,
       };
     });
     builder.addCase(getTvDetails.fulfilled, (state, action: PayloadAction<ITvDetailsResponse>) => {
       return {
         ...state,
-        tvDetailsResponse: action.type,
+        tvDetailsResponseStatus: action.type,
         loading: false,
         tvDetails: action.payload,
       };
@@ -238,7 +238,7 @@ const MovieSlice = createSlice({
     builder.addCase(getTvDetails.rejected, (state, action) => {
       return {
         ...state,
-        tvDetailsResponse: action.type,
+        tvDetailsResponseStatus: action.type,
         loading: false,
       };
     });

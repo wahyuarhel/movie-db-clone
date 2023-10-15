@@ -1,20 +1,20 @@
-interface IGenreResponse {
+export interface IGenreResponse {
   id: number
   name: string
 }
-interface IProductionCountryResponse {
+export interface IProductionCountryResponse {
   iso_3166_1: string
   name: string
 }
 
-interface IProductionCompanyResponse {
+export interface IProductionCompanyResponse {
   id: number
   logo_path: string
   name: string
   origin_country: string
 }
 
-interface IVideoDetail {
+export interface IVideoDetail {
   id: string
   iso_639_1: string,
   iso_3166_1: string,
@@ -27,16 +27,16 @@ interface IVideoDetail {
   type: string,
 }
 
-interface IVideos {
+export interface IVideos {
   results: IVideoDetail[]
 }
-interface ISpokenLanguageResponse {
+export interface ISpokenLanguageResponse {
   english_name: string
   iso_639_1: string
   name: string
 }
 
-interface ICastMemberDetail {
+export interface ICastMemberDetail {
   adult: boolean,
   gender: number,
   id: number,
@@ -51,7 +51,7 @@ interface ICastMemberDetail {
   order: number
 }
 
-interface ICrewMemberDetail {
+export interface ICrewMemberDetail {
   adult: boolean,
   gender: number,
   id: number,
@@ -64,7 +64,7 @@ interface ICrewMemberDetail {
   department: string,
   job: string
 }
-interface ICreditResponse {
+export interface ICreditResponse {
   cast: ICastMemberDetail[]
   crew: ICrewMemberDetail[]
 }
@@ -72,21 +72,21 @@ export interface ICreditByMovieIdResponse extends ICreditResponse {
   id: string,
 }
 
-interface IKeywordDetail {
+export interface IKeywordDetail {
   id: number
   name: string
 }
-interface IKeywords {
+export interface IKeywords {
   keywords: IKeywordDetail[]
 }
 
-interface IAuthorDetail {
+export interface IAuthorDetail {
   avatar_path: string | null
   name: string
   rating: number | null
   username: string
 }
-interface IReviewResult {
+export interface IReviewResult {
   author: string
   author_details: IAuthorDetail
   content: string
@@ -95,7 +95,7 @@ interface IReviewResult {
   updated_at: Date
   url: string
 }
-interface IReviewResponse {
+export interface IReviewResponse {
   page: number
   results: IReviewResult[]
   total_pages: number

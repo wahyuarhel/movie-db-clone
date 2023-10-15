@@ -2,6 +2,7 @@
 import ModalVideoPlayer from '@/app/components/modalVideoPlayer'
 import RecommendationCard from '@/app/components/recommendationCard'
 import CustomTooltip from '@/app/components/tooltipContent'
+import DetailHeaderSection from '@/components/detailHeaderSection'
 import { backdropUrlSizeW1280, posterUrlSizeW342, profileUrlSizeW185 } from '@/redux/api/endpoint'
 import { IMovieDetailsResponse } from '@/types/movieDetailsType'
 import { IRecommendationMovieResponse } from '@/types/recommendationType'
@@ -53,125 +54,19 @@ function MovieDetailContent(props: IMovieDetailContent) {
 
   function Section1() {
     return (
-      <section className='w-full bg-cover bg-no-repeat text-white'
-        style={{ backgroundImage: `url(${backdropUrlSizeW1280}${movieData.backdrop_path})` }}>
-        <div className={`bg-blend-screen bg-gray-950/60 p-10 bg-right`}>
-          <div className='container m-auto flex gap-10'>
-            <div>
-              <div className='h-[450px] w-[300px]'>
-                <Image
-                  id='imagePoster'
-                  priority
-                  src={posterUrlSizeW342 + movieData.poster_path}
-                  alt={movieData.title}
-                  width={340}
-                  height={340}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                  }}
-                  className='rounded-xl object-cover' />
-              </div>
-            </div>
-            <div className='flex flex-col justify-center'>
-              <div className='title mb-5'>
-                <span className='text-4xl font-semibold mr-3'>{movieData.title}</span>
-                <span className='text-gray-300 text-4xl font-light'>({movieData?.release_date?.slice(0, 4)})</span>
-                <div>
-                  <div className='flex gap-2 items-center'>
-                    <span>{movieData?.release_date}</span>
-                    <span>•</span>
-                    {movieData.genres?.map((e: any, i: number) =>
-                      <React.Fragment key={i}>
-                        <span key={i}>{e.name}</span>
-                        {i !== movieData.genres.length - 1 ?
-                          <span>{', '}</span> : null
-                        }
-                      </React.Fragment>
-                    )}
-                    <span>•</span>
-                    <p>{Utils.convertNumberToTimeFormat(movieData.runtime)}</p>
-                  </div>
-                </div>
-              </div>
-              <div className='flex items-center mb-5'>
-                <div className='flex items-center gap-2 mr-3'>
-                  <div className='bg-darkBlue inline-flex rounded-full p-[2px]'>
-                    <CircularProgress
-                      aria-label='loading...'
-                      size="lg"
-                      value={movieData.vote_average * 10}
-                      valueLabel={
-                        <div className='flex'>
-                          <p className='font-["Manrope"] text-xl'>{Math.floor(movieData.vote_average * 10)}</p>
-                          <p className='font-["Manrope"] text-[7px] pt-[5px]'>%</p>
-                        </div>
-                      }
-                      showValueLabel={true}
-                      strokeWidth={3}
-                      classNames={{
-                        svg: 'w-[60px] h-[60px]',
-                        indicator: "stroke-accountGreen",
-                        track: "stroke-accountGreen/10",
-                        label: ''
-                      }}
-                    />
-                  </div>
-                  <span className='font-semibold'>User<br />Score</span>
-                </div>
-                <CustomTooltip label='Login to create and edit custom lists'>
-                  <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
-                    <FaList size={16} />
-                  </Link>
-                </CustomTooltip>
-                <CustomTooltip label='Login to add this movie to your favorite list'>
-                  <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
-                    <MdFavorite size={16} />
-                  </Link>
-                </CustomTooltip>
-                <CustomTooltip label='Login to add this movie to your watchlist'>
-                  <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
-                    <MdBookmark size={16} />
-                  </Link>
-                </CustomTooltip>
-                <CustomTooltip label='Login to rate this movie'>
-                  <Link href='' className='rounded-full p-4 bg-darkBlue mr-5'>
-                    <MdStar size={16} />
-                  </Link>
-                </CustomTooltip>
-                <div>
-                  <div className='flex items-center gap-2 transition-colors duration-300 ease-in-out hover:text-gray-400 cursor-pointer'
-                    onClick={onOpen}
-                  >
-                    <MdPlayArrow size={20} />
-                    <p className='text-md'>Play Trailer</p>
-                  </div>
-                </div>
-              </div>
-              <div>
-                <p className='text-white/70 italic text-lg'>{movieData.tagline}</p>
-                <p className='text-xl my-2'>Overview</p>
-                <p className=''>{movieData.overview}</p>
-              </div>
-              <div className='flex gap-5 mt-5'>
-                <div className='flex-1'>
-                  <p>{movieData.credits?.crew?.find(e => e.job === 'Director')?.name}</p>
-                  <p>Director</p>
-                </div>
-                <div className='flex-1'>
-                  <p>{movieData.credits?.crew?.find(e => e.job === 'Producer')?.name}</p>
-                  <p>Producer</p>
-                </div>
-                <div className='flex-1'>
-                  <p>{movieData.credits?.crew?.find(e => e.job === 'Editor')?.name}</p>
-                  <p>Editor</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <DetailHeaderSection
+        backdropPath={movieData.backdrop_path}
+        posterPath={movieData.poster_path}
+        title={movieData.title}
+        releaseDate={movieData.release_date}
+        runTime={movieData.runtime}
+        voteAverage={movieData.vote_average}
+        tagline={movieData.tagline}
+        overview={movieData.overview}
+        crew={movieData.credits.crew}
+        genres={movieData.genres}
+        onOpenTrailerModal={onOpen}
+      />
     )
   }
 
