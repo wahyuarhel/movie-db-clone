@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@netlify/plugin-nextjs": "^4.40.2",
     "@nextui-org/card": "^2.0.21",
     "@nextui-org/chip": "^2.0.21",
     "@nextui-org/divider": "^2.0.20",
