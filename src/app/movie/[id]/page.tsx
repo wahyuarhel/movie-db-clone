@@ -8,8 +8,6 @@ import { useAppDispatch, useAppSelector } from '@/redux/store/hook'
 import { useParams } from 'next/navigation'
 import { useEffect } from 'react'
 import MovieDetailContent from './movieDetailsContent'
-import { IMovieDetailsResponse } from '@/types/movieDetailsType'
-import { posterUrlSizeW154 } from '@/redux/api/endpoint'
 
 function MovieDetailsPage() {
   const { id } = useParams()
@@ -20,12 +18,12 @@ function MovieDetailsPage() {
     dispatch(getRecommendationMovieByMovieId(id as string))
   }, [dispatch, id])
 
-  if (movieDetailsResponse == MovieDetailsResponseStatusType.fulfilled)
-    return <MovieDetailContent movieData={movieDetails} recommendationMovieById={recommendationMovieById} />
-  else if (movieDetailsResponse == MovieDetailsResponseStatusType.rejected)
+  if (movieDetailsResponse === MovieDetailsResponseStatusType.pending)
+    return <LoadingModal isOpen={movieDetailsResponse === MovieDetailsResponseStatusType.pending} />
+  if (movieDetailsResponse === MovieDetailsResponseStatusType.rejected)
     return (<FailedContent />)
-  else
-    return <LoadingModal isOpen={movieDetailsResponse == MovieDetailsResponseStatusType.pending} />
+
+  return <MovieDetailContent movieData={movieDetails} recommendationMovieById={recommendationMovieById} />
 
 }
 

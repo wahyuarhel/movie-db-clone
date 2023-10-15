@@ -1,5 +1,4 @@
 'use client'
-import ModalVideoPlayer from '@/app/components/modalVideoPlayer'
 import RecommendationCard from '@/app/components/recommendationCard'
 import DetailHeaderSection from '@/components/detailHeaderSection'
 import { profileUrlSizeW185 } from '@/redux/api/endpoint'
@@ -26,7 +25,6 @@ function MovieDetailContent(props: IMovieDetailContent) {
   } = props
 
 
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const reviews = movieData?.reviews?.results
   const getRandomIndex = Utils.generateRandomNumber(reviews.length)
@@ -37,7 +35,6 @@ function MovieDetailContent(props: IMovieDetailContent) {
 
   return (
     <>
-      <ModalVideoPlayer isOpen={isOpen} onOpenChange={onOpenChange} videoId='2m1drlOZSDw' />
       <main>
         <Section1 />
         <Section2 />
@@ -59,7 +56,7 @@ function MovieDetailContent(props: IMovieDetailContent) {
         overview={movieData.overview}
         crew={movieData.credits.crew}
         genres={movieData.genres}
-        onOpenTrailerModal={onOpen}
+        videoId={movieData.videos.results[0].key}
       />
     )
   }

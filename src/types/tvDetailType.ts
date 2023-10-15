@@ -1,4 +1,4 @@
-import { IGenreResponse, IVideoDetail } from "./movieDetailsType"
+import { IGenreResponse, IVideos } from "./movieDetailsType"
 
 export interface ICreatedBy {
   id: number
@@ -114,7 +114,7 @@ export interface ITvDetailsResponse {
   status: string
   tagline: string
   type: string
-  videos: IVideoDetail[]
+  videos: IVideos
   vote_average: number
   vote_count: number
 }

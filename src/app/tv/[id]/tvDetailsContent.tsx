@@ -4,10 +4,9 @@ import React from 'react'
 
 interface TvDetailContentProp {
   tvDetails: ITvDetailsResponse
-  openTrailerModal(): void
 }
 const TvDetailContent = (props: TvDetailContentProp) => {
-  const { tvDetails, openTrailerModal } = props
+  const { tvDetails } = props
   return (
     <DetailHeaderSection
       backdropPath={tvDetails.backdrop_path}
@@ -19,7 +18,8 @@ const TvDetailContent = (props: TvDetailContentProp) => {
       overview={tvDetails.overview}
       createdBy={tvDetails.created_by}
       genres={tvDetails.genres}
-      onOpenTrailerModal={openTrailerModal} />
+      videoId={tvDetails.videos.results[0].key}
+    />
   )
 }
 

@@ -5,13 +5,10 @@ import { MediaType, PopularMoviesResponseType } from '@/enums/enums';
 import { getPopularMovies, getTrendingAllThisWeek, getTrendingAllToday } from '@/redux/action/movieAction';
 import { posterUrlSizeW185, posterUrlSizeW342 } from '@/redux/api/endpoint';
 import { useAppDispatch, useAppSelector } from '@/redux/store/hook';
-import Link from 'next/link';
-import React, { Key, useEffect, useRef, useState } from 'react';
-import { HeaderHome } from './components/headerHome';
-import { Tab, Tabs } from '@nextui-org/tabs';
-import { ScrollShadow } from '@nextui-org/scroll-shadow';
 import { ITrendingResponse } from '@/types/trendingType';
-import { divider } from '@nextui-org/theme';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+import { HeaderHome } from './components/headerHome';
 
 
 export default function Home() {
@@ -30,7 +27,7 @@ export default function Home() {
   return (
     <main>
       <div className='container m-auto'>
-        {popularMovieResponse == PopularMoviesResponseType.fulfilled ?
+        {popularMovieResponse === PopularMoviesResponseType.fulfilled ?
           <HeaderHome
             backgroundImage={popularMovies.results[randomIndex].backdrop_path} />
           :
@@ -48,20 +45,11 @@ function TrendingMovie() {
     trendingAllThisToday,
     trendingAllThisWeek,
   } = useAppSelector(state => state.movie)
-  const ref = useRef<HTMLDivElement>(null)
   const [isToday, setIsToday] = useState<boolean>(true)
-  const [selectedTabIndex, setSelectedTabIndex] = useState<number>(0)
-
-  const tabContent = [
-    { label: "Today", content: <div>Today</div> },
-    { label: "This Week", content: <div>This Week</div> },
-  ]
 
   function onClickSwitch() {
     setIsToday(!isToday)
-    if (ref.current !== null) {
-      ref.current.scroll({ left: 0, behavior: 'smooth' })
-    }
+
   }
 
   useEffect(() => {
@@ -75,26 +63,21 @@ function TrendingMovie() {
       <div className='px-5 md:px-10 flex gap-5 items-center'>
         <p className='text-2xl font-semibold'>Trending</p>
         <div className='flex border border-black rounded-full' >
-          {tabContent.map((e, i) =>
-            <div key={i} className={`${isToday ? 'bg-transparent' : 'bg-[#032541]'} rounded-full cursor-pointer`} onClick={onClickSwitch}>
-              <p className={`${isToday ? 'text-black' : 'text-transparent'} px-3 py-1 font-semibold bg-clip-text bg-gradient-to-r from-[#c0fecf] to-[#1ed5a9]`}>{e.label}</p>
-            </div>
-          )}
-          {/* <Link href='' className={`${isToday ? 'bg-[#032541]' : 'bg-[transparent]'} rounded-full`} onClick={onClickSwitch}>
+          <Link href='' className={`${isToday ? 'bg-[#032541]' : 'bg-[transparent]'} rounded-full`} onClick={onClickSwitch}>
             <p className={`${!isToday ? 'text-black' : 'text-transparent'} px-3 py-1 font-semibold bg-clip-text bg-gradient-to-r from-[#c0fecf] to-[#1ed5a9] `}>Today</p>
           </Link>
           <Link href='' className={`${isToday ? 'bg-transparent' : 'bg-[#032541]'} rounded-full`} onClick={onClickSwitch}>
             <p className={`${isToday ? 'text-black' : 'text-transparent'} px-3 py-1 font-semibold bg-clip-text bg-gradient-to-r from-[#c0fecf] to-[#1ed5a9]`}>This Week</p>
-          </Link> */}
+          </Link>
         </div>
       </div>
-      <div ref={ref} className='flex gap-5 px-5 md:px-10 py-5 md:py-10 overflow-x-scroll'>
+      <div className='flex gap-5 px-5 md:px-10 py-5 md:py-10 overflow-x-scroll'>
         {isToday ?
           trendingAllThisToday.results !== undefined ?
             trendingAllThisToday.results.map((movie) =>
               <MovieCard
                 key={movie.id}
-                href={movie.media_type == MediaType.movie ? `/movie/${movie.id}` : `/tv/${movie.id}`}
+                href={movie.media_type === MediaType.movie ? `/movie/${movie.id}` : `/tv/${movie.id}`}
                 imgSrc={posterUrlSizeW185 + movie.poster_path}
                 title={movie.media_type === MediaType.movie ? movie.title : movie.name}
                 rate={movie.vote_average}
