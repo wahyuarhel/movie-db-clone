@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client"
 import MovieCard, { MovieCardPlaceholder } from '@/components/movieCard';
 import { MediaType, PopularMoviesResponseType } from '@/enums/enums';
@@ -16,7 +15,6 @@ export default function Home() {
   const {
     popularMovies,
     popularMovieResponse,
-    movieDetailsResponse
   } = useAppSelector(state => state.movie)
 
   useEffect(() => {
@@ -55,6 +53,7 @@ function TrendingMovie() {
   useEffect(() => {
     dispatch(getTrendingAllToday())
     dispatch(getTrendingAllThisWeek())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
