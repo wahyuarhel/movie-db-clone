@@ -46,7 +46,7 @@ const initialState: MovieState = {
   movieDetails: {} as IMovieDetailsResponse,
   movieDetailsResponse: MovieDetailsResponseStatusType.pending,
   tvDetails: {} as ITvDetailsResponse,
-  tvDetailsResponseStatus: TvDetailsResponseStatusType.idle,
+  tvDetailsResponseStatus: TvDetailsResponseStatusType.pending,
   credit: {} as ICreditByMovieIdResponse,
   creditResponse: CreditByMovieIdResponseStatusType.pending,
   recommendationMovieById: {} as IRecommendationMovieResponse,
