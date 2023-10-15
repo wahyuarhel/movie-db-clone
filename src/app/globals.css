@@ -9,7 +9,10 @@ body {
   margin: auto;
   box-sizing: border-box;
   padding: 0;
+  background-color: rgb(3, 37, 65);
+  min-width: 320px;
 }
-p {
-  font-family: 'Source Sans 3', sans-serif;
+p,
+span {
+  font-family: 'Source Sans 3', Arial, sans-serif;
 }
