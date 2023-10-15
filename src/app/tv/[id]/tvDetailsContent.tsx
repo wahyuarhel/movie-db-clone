@@ -14,7 +14,6 @@ const TvDetailContent = (props: TvDetailContentProp) => {
       posterPath={tvDetails.poster_path}
       title={tvDetails.name}
       firstAirDate={tvDetails.first_air_date}
-      // runTime={0}
       voteAverage={tvDetails.vote_average}
       tagline={tvDetails.tagline}
       overview={tvDetails.overview}

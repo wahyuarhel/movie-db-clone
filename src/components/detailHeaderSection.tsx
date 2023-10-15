@@ -43,6 +43,8 @@ const DetailHeaderSection = (props: DetailHeaderSectionProp) => {
     createdBy,
     onOpenTrailerModal
   } = props
+
+  const year = releaseDate?.slice(0, 4) ?? firstAirDate?.slice(0, 4)
   return (
     <section className='w-full bg-cover bg-no-repeat text-white bg-top'
       style={{ backgroundImage: `url(${backdropUrlSizeW1280}${backdropPath})` }}>
@@ -68,11 +70,10 @@ const DetailHeaderSection = (props: DetailHeaderSectionProp) => {
           <div className='flex flex-col justify-center'>
             <div className='title mb-5'>
               <span className='text-4xl font-semibold mr-3'>{title}</span>
-
-              <span className='text-gray-300 text-4xl font-light'>({releaseDate?.slice(0, 4) ?? firstAirDate?.slice(0, 4)})</span>
+              <span className='text-gray-300 text-4xl font-light'>({year})</span>
               <div>
                 <div className='flex gap-2 items-center'>
-                  {releaseDate !== null &&
+                  {releaseDate !== undefined &&
                     <div>
                       <span>{releaseDate}</span>
                       <span>•</span>
