@@ -15,8 +15,8 @@ interface DetailHeaderSectionProp {
   backdropPath: string
   posterPath: string
   title: string,
-  releaseDate?: string,
-  firstAirDate?: string,
+  releaseDate?: Date,
+  firstAirDate?: Date,
   runTime?: number,
   voteAverage: number
   tagline: string,
@@ -45,7 +45,10 @@ const DetailHeaderSection = (props: DetailHeaderSectionProp) => {
   } = props
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const year = releaseDate?.slice(0, 4) ?? firstAirDate?.slice(0, 4)
+  const getYear = () => {
+    if (releaseDate !== undefined || firstAirDate !== undefined)
+      return Utils.formateDateToString(releaseDate!, 'yyyy') ?? Utils.formateDateToString(firstAirDate!, 'yyyyy')
+  }
   return (
     <>
       <ModalVideoPlayer isOpen={isOpen} onOpenChange={onOpenChange} videoId={videoId} />
@@ -72,12 +75,12 @@ const DetailHeaderSection = (props: DetailHeaderSectionProp) => {
             <div className='flex flex-col justify-center'>
               <div className='title mb-5'>
                 <span className='text-4xl font-semibold mr-3'>{title}</span>
-                <span className='text-gray-300 text-4xl font-light'>({year})</span>
+                <span className='text-gray-300 text-4xl font-light'>({getYear()})</span>
                 <div>
                   <div className='md:flex md:gap-2 items-center'>
                     {releaseDate !== undefined &&
                       <>
-                        <span>{releaseDate}</span>
+                        <span>{Utils.formateDateToString(releaseDate)}</span>
                         <span className='hidden md:block'>•</span>
                       </>
                     }

@@ -120,7 +120,7 @@ export interface IMovieDetailsResponse {
   poster_path: string
   production_companies: IProductionCompanyResponse[]
   production_countries: IProductionCountryResponse[]
-  release_date: string
+  release_date: Date
   revenue: number
   reviews: IReviewResponse
   runtime: number

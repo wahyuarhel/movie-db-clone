@@ -40,7 +40,7 @@ export interface IProductionCountry {
 }
 
 export interface ICountry {
-  air_date: string
+  air_date: Date
   episode_count: number
   id: number
   name: string
@@ -88,7 +88,7 @@ export interface ITvDetailsResponse {
   created_by: ICreatedBy[]
   episode_run_time: number[]
   external_ids: IExternalId
-  first_air_date: string
+  first_air_date: Date
   genres: IGenreResponse[]
   homepage: string
   id: number

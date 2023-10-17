@@ -18,7 +18,7 @@ export interface IPopularMovieResult {
   overview: string,
   popularity: number,
   poster_path: string,
-  release_date: string,
+  release_date: Date,
   title: string,
   video: boolean,
   vote_average: number,
