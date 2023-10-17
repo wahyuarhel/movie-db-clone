@@ -1,5 +1,4 @@
-import { backdropUrlSizeW1280, backdropUrlSizeW780 } from "@/redux/api/endpoint"
-import { useEffect, useState } from "react"
+import { backdropUrlSizeW1280 } from "@/redux/api/endpoint"
 
 
 interface HeaderHomeProps {

@@ -1,9 +1,9 @@
-import Navbar from '@/components/navbar'
-import './globals.css'
+import Footer from '@/components/footer'
+import AppNavbar from '@/components/navbar'
+import { Providers } from '@/redux/providers'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import Footer from '@/components/footer'
-import { Providers } from '@/redux/providers'
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,8 +22,8 @@ export default function RootLayout({
       <body className={inter.className}
         suppressHydrationWarning={true} >
         <Providers>
-          <Navbar />
-          <div className='min-h-[calc(100vh-(350px))] bg-white mt-[64px]'>
+          <AppNavbar />
+          <div className='min-h-[calc(100vh-(350px))] bg-white'>
             {children}
           </div>
           <Footer />
