@@ -9,7 +9,7 @@ function AppNavbar() {
   const currentPage = usePathname()
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
-  const [selectedMenuKeys, setSelectedMenuKeys] = React.useState<Iterable<Key>>(new Set(['']));
+  const [selectedMenuKeys, setSelectedMenuKeys] = React.useState<Iterable<Key>>(new Set([""]));
 
 
   const menuItems = [
@@ -48,12 +48,14 @@ function AppNavbar() {
     if (pathName === currentPage) {
       return 'text-white/100 underline'
     }
-    return ''
+    return 'text-white/70'
   }
   const handleOpenMenu = () => setIsMenuOpen(prev => !prev)
   const handleCloseMenu = () => {
     setIsMenuOpen(false)
+    if (currentPage === '/') setSelectedMenuKeys(new Set([""]))
   }
+  useEffect(() => { }, [selectedMenuKeys])
 
 
   return (
@@ -75,6 +77,7 @@ function AppNavbar() {
               isCompact
               selectedKeys={selectedMenuKeys}
               onSelectionChange={setSelectedMenuKeys}
+              hideIndicator
               className='px-0 py-0'
               showDivider={false}
             >
@@ -82,7 +85,6 @@ function AppNavbar() {
                 <AccordionItem key={i}
                   aria-label={menu.title}
                   title={menu.title}
-                  indicator={<p></p>}
                   classNames={{
                     title: 'text-white text-xl font-semibold',
                     trigger: 'py-0 pb-2',
@@ -93,7 +95,7 @@ function AppNavbar() {
                     {menu.subMenu.map((subMenu, i) =>
                       <li key={i}>
                         <Link href={subMenu.path}
-                          className={`text-base text-white/70 ${handleMenuSelectedStyle(subMenu.path)}`}
+                          className={`text-base  ${handleMenuSelectedStyle(subMenu.path)}`}
                           onClick={handleCloseMenu}
                         >
                           {subMenu.label}
