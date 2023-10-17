@@ -7,7 +7,6 @@ import { IRecommendationMovieResponse } from '@/types/recommendationType'
 import { Utils } from '@/utils/utils'
 import { Card, CardBody } from '@nextui-org/card'
 import { Divider } from '@nextui-org/divider'
-import { useDisclosure } from '@nextui-org/modal'
 import { ScrollShadow } from '@nextui-org/scroll-shadow'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -63,17 +62,17 @@ function MovieDetailContent(props: IMovieDetailContent) {
 
   function Section2() {
     return (
-      <section>
-        <div className='container m-auto py-8'>
-          <div className="grid grid-cols-4 gap-4">
-            <div className='col-span-3'>
+      <section className='px-5'>
+        <div className='container mx-auto py-8'>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+            <div className=' lg:col-span-3'>
               <p className='text-xl font-semibold mb-5'>Top Billed Cast</p>
               <ScrollShadow
                 orientation="horizontal"
                 className='flex gap-5 pb-5 px-2 items-stretch'>
                 {movieData.credits?.cast.slice(0, 9).map((e, i) =>
                   <div key={i} className='rounded-md shadow-md'>
-                    <div className='w-[137px] h-[175px]'>
+                    <div className='w-[120px] h-[133px] lg:w-[137px] lg:h-[175px]'>
                       <Image
                         src={profileUrlSizeW185 + e.profile_path}
                         alt={e.name}
@@ -83,7 +82,6 @@ function MovieDetailContent(props: IMovieDetailContent) {
                         style={{
                           width: '100%',
                           height: '100%',
-                          // objectFit: 'cover'
                         }}
                         className='rounded-t-md object-cover object-top'
                       />
@@ -158,20 +156,27 @@ function MovieDetailContent(props: IMovieDetailContent) {
         <div className=''>
           <div className='flex items-center gap-2'>
             <p className='font-semibold'>Reviews</p>
-            <p className='bg-gray-500 rounded-full px-2 text-white'>{reviews.length}</p>
+            <div className='inline-flex flex-1 '>
+              <p className='bg-gray-500 rounded-full px-2 w-[1.5rem] h-[1.5rem] text-white '>{reviews.length}</p>
+            </div>
           </div>
-          <Card className='my-3' radius='sm'>
+          <Card
+            className='my-3'
+            radius='sm'
+          >
             <CardBody>
               <div className={'flex gap-3'}>
                 <p className='text-white rounded-full  bg-darkBlue w-[45px] h-[45px] flex items-center justify-center'>
                   {filterReviewThatHaveRate[getRandomIndex]?.author[0]}
                 </p>
-                <div>
+                <div className='flex-1'>
                   <p className='font-semibold text-xl'>A review by {filterReviewThatHaveRate[getRandomIndex]?.author}</p>
-                  <div className='flex items-center gap-2'>
-                    <div className='flex items-center gap-1 text-sm text-white bg-darkBlue px-1 rounded-sm'>
-                      <IoStar size={10} />
-                      <span className='font-semibold'>{filterReviewThatHaveRate[getRandomIndex]?.author_details.rating?.toFixed(1)}</span>
+                  <div className='flex flex-col lg:flex-row lg:items-center gap-2'>
+                    <div className='inline-flex text-sm text-white '>
+                      <div className='flex items-center gap-1 bg-darkBlue px-2 py-1 rounded-md'>
+                        <IoStar size={10} />
+                        <span className='font-semibold'>{filterReviewThatHaveRate[getRandomIndex]?.author_details.rating?.toFixed(1)}</span>
+                      </div>
                     </div>
                     <p className='text-sm'>Written by
                       <span className='font-semibold ml-1'>{filterReviewThatHaveRate[getRandomIndex]?.author}</span>
