@@ -18,7 +18,7 @@ const TvDetailContent = (props: TvDetailContentProp) => {
       overview={tvDetails.overview}
       createdBy={tvDetails.created_by}
       genres={tvDetails.genres}
-      videoId={tvDetails.videos.results[0].key}
+      video={tvDetails.videos}
     />
   )
 }

@@ -1,7 +1,7 @@
 import ModalVideoPlayer from '@/app/components/modalVideoPlayer'
 import CustomTooltip from '@/app/components/tooltipContent'
 import { backdropUrlSizeW1280, posterUrlSizeW342 } from '@/redux/api/endpoint'
-import { ICrewMemberDetail, IGenreResponse } from '@/types/movieDetailsType'
+import { ICrewMemberDetail, IGenreResponse, IVideos } from '@/types/movieDetailsType'
 import { ICreatedBy } from '@/types/tvDetailType'
 import { Utils } from '@/utils/utils'
 import { CircularProgress, Divider, useDisclosure } from '@nextui-org/react'
@@ -24,7 +24,7 @@ interface DetailHeaderSectionProp {
   crew?: ICrewMemberDetail[],
   createdBy?: ICreatedBy[],
   genres: IGenreResponse[],
-  videoId: string
+  video?: IVideos
 
 }
 const DetailHeaderSection = (props: DetailHeaderSectionProp) => {
@@ -41,7 +41,7 @@ const DetailHeaderSection = (props: DetailHeaderSectionProp) => {
     crew,
     genres,
     createdBy,
-    videoId,
+    video,
   } = props
 
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -49,9 +49,11 @@ const DetailHeaderSection = (props: DetailHeaderSectionProp) => {
     if (releaseDate !== undefined || firstAirDate !== undefined)
       return Utils.formateDateToString(releaseDate!, 'yyyy') ?? Utils.formateDateToString(firstAirDate!, 'yyyyy')
   }
+
+  const videoId = video!.results.length > 0 ? video?.results[0].key : ''
   return (
     <>
-      <ModalVideoPlayer isOpen={isOpen} onOpenChange={onOpenChange} videoId={videoId} />
+      <ModalVideoPlayer isOpen={isOpen} onOpenChange={onOpenChange} videoId={videoId!} />
       <section className='w-full bg-cover bg-no-repeat text-white bg-top'
         style={{ backgroundImage: `url(${backdropUrlSizeW1280}${backdropPath})` }}>
         <div className={`bg-blend-screen bg-gray-950/60 px-5 pt-5 pb-10 lg:p-10`}>
@@ -148,15 +150,17 @@ const DetailHeaderSection = (props: DetailHeaderSectionProp) => {
                     </Link>
                   </CustomTooltip>
                 </div>
-                <div>
-                  <div
-                    className='flex items-center gap-2 transition-colors duration-300 ease-in-out hover:text-gray-400 cursor-pointer'
-                    onClick={onOpen}
-                  >
-                    <MdPlayArrow size={20} />
-                    <p className='text-base'>Play Trailer</p>
+                {(video!.results!.length > 0) &&
+                  <div>
+                    <div
+                      className='flex items-center gap-2 transition-colors duration-300 ease-in-out hover:text-gray-400 cursor-pointer'
+                      onClick={onOpen}
+                    >
+                      <MdPlayArrow size={20} />
+                      <p className='text-base'>Play Trailer</p>
+                    </div>
                   </div>
-                </div>
+                }
               </div>
               <div>
                 <p className='text-white/70 italic text-lg'>{tagline}</p>

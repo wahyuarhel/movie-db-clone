@@ -23,9 +23,21 @@ function formateDateToString(date: Date, dateFormat = 'DD/MM/YYYY') {
   return moment(date).format(dateFormat)
 }
 
+function formatNumber(num: number) {
+  return Intl.NumberFormat().format(num)
+}
+function formatNumberToUsDollar(num: number) {
+  return Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(num)
+}
+
 export const Utils = {
   randomColor,
   convertNumberToTimeFormat,
   generateRandomNumber,
   formateDateToString,
+  formatNumber,
+  formatNumberToUsDollar
 }

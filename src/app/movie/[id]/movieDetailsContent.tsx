@@ -55,7 +55,7 @@ function MovieDetailContent(props: IMovieDetailContent) {
         overview={movieData.overview}
         crew={movieData.credits.crew}
         genres={movieData.genres}
-        videoId={movieData.videos.results[0].key}
+        video={movieData.videos}
       />
     )
   }
@@ -128,11 +128,11 @@ function MovieDetailContent(props: IMovieDetailContent) {
           </p>
           <p className='flex flex-col mb-5'>
             <strong>Budget</strong>
-            {movieData.budget}
+            {Utils.formatNumberToUsDollar(movieData.budget)}
           </p>
           <p className='flex flex-col mb-5'>
             <strong>Revenue</strong>
-            {movieData.revenue}
+            {Utils.formatNumberToUsDollar(movieData.revenue)}
           </p>
           <div>
             <p className='font-bold mb-1'>Keywords</p>
